@@ -4,8 +4,6 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DokumenMasukController;
 use App\Http\Controllers\Admin\ValidasiDokumenController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Operator\DokumenMasukController as OperatorDokumenMasukController;
-use App\Http\Controllers\Operator\OperatorController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,20 +21,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/dokumen-masuk', [DokumenMasukController::class, 'index'])->name('admin.dokumen_masuk');
 
         Route::get('/validasi-dokumen', [ValidasiDokumenController::class, 'index'])->name('admin.validasi_dokumen');
-        Route::patch('/validasi-dokumen/{arsipPenelitianKesehatan}/validasi', [ValidasiDokumenController::class, 'validasi'])->name('admin.dokumen.lakukanValidasi');
-        Route::patch('/validasi-dokumen/{arsipPenelitianKesehatan}/revisi', [ValidasiDokumenController::class, 'revisi'])->name('admin.dokumen.lakukanRevisi');
+        Route::patch('/validasi-dokumen/{arsip}/validasi', [ValidasiDokumenController::class, 'validasi'])->name('admin.dokumen.lakukanValidasi');
+        Route::patch('/validasi-dokumen/{arsip}/revisi', [ValidasiDokumenController::class, 'revisi'])->name('admin.dokumen.lakukanRevisi');
 
         Route::resource('/kelola-user', \App\Http\Controllers\Admin\UserController::class)
             ->parameters(['kelola-user' => 'user'])
             ->names('admin.users')
             ->except(['show']);
-    });
-
-    //? Operator
-    Route::middleware(['cekrole:operator'])->group(function () {
-        Route::get('/operator/dashboard', [OperatorController::class, 'index'])->name('operator.index');
-
-        Route::get('/operator/dokumen-masuk', [OperatorDokumenMasukController::class, 'index'])->name('operator.dokumen_masuk');
     });
 
     //? User
@@ -45,7 +36,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/user/dashboard', [App\Http\Controllers\User\UserController::class, 'index'])->name('user.index');
 
         // Upload Dokumen
-        Route::get('/upload-dokumen', [App\Http\Controllers\User\UserController::class, 'indexUpload'])->name('user.upload');
+        Route::get('/upload-dokumen', [App\Http\Controllers\User\DokumenController::class, 'indexUpload'])->name('user.upload');
         Route::post('/upload-dokumen', [App\Http\Controllers\User\DokumenController::class, 'storeUpload'])->name('user.upload.store');
 
         // Riwayat Dokumen (Halaman Utama)

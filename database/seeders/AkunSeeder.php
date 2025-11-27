@@ -27,17 +27,6 @@ class AkunSeeder extends Seeder
                 'department' => 'IT',
             ],
             [
-                'name' => 'Operator',
-                'email' => 'operator@gmail.com',
-                'password' => Hash::make('123'),
-                'role' => 'operator',
-                'nomor_telepon' => '080000000002',
-                'institusi' => 'Layanan Operator',
-                'nomor_identitas' => 'OPERATOR001',
-                'gelar_jabatan' => 'Operator',
-                'department' => 'Pelayanan',
-            ],
-            [
                 'name' => 'User',
                 'email' => 'user@gmail.com',
                 'password' => Hash::make('123'),

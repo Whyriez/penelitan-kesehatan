@@ -21,6 +21,11 @@ class ArsipPenelitianKesehatan extends Model
         'catatan_revisi',
     ];
 
+    protected $casts = [
+        'file' => 'array',
+        'tgl_upload' => 'date',
+    ];
+
 
     public function user(): BelongsTo
     {

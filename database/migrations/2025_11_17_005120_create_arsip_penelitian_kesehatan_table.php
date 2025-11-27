@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('nama');
             $table->text('deskripsi')->nullable();
             $table->date('tgl_upload');
-            $table->string('file');
+            $table->json('file');
             $table->enum('status', ['pending', 'valid', 'revisi'])->default('pending');
             $table->text('catatan_revisi')->nullable();
             $table->timestamps();

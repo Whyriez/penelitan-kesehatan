@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('gelar_jabatan')->nullable();
             $table->string('department')->nullable();
 
-            $table->enum('role', ['admin', 'operator', 'user'])->default('user');
+            $table->enum('role', ['admin', 'user'])->default('user');
 
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

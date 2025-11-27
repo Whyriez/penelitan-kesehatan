@@ -32,10 +32,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function indexUpload()
-    {
-        return view('pages.user.upload.index');
-    }
+    
 
     public function indexRiwayat(Request $request)
     {

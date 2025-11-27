@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ArsipPenelitianKesehatan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class DokumenMasukController extends Controller
 {
@@ -13,15 +12,23 @@ class DokumenMasukController extends Controller
     {
         $query = ArsipPenelitianKesehatan::query();
 
+        // Filter Search
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('nama', 'like', '%' . $request->search . '%')
-                  ->orWhere('deskripsi', 'like', '%' . $request->search . '%');
+                  ->orWhere('deskripsi', 'like', '%' . $request->search . '%')
+                  ->orWhereHas('user', function($u) use ($request) {
+                      $u->where('name', 'like', '%' . $request->search . '%');
+                  });
             });
         }
+
+        // Filter Status
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
+
+        // Filter Tanggal
         if ($request->filled('date_from')) {
             $query->whereDate('created_at', '>=', $request->date_from);
         }
@@ -29,24 +36,19 @@ class DokumenMasukController extends Controller
             $query->whereDate('created_at', '<=', $request->date_to);
         }
 
+        // Sorting
         $sortBy = $request->input('sort_by', 'newest');
         switch ($sortBy) {
-            case 'oldest':
-                $query->orderBy('created_at', 'asc');
-                break;
-            case 'name':
-                $query->orderBy('nama', 'asc');
-                break;
-            case 'newest':
-            default:
-                $query->orderBy('created_at', 'desc');
-                break;
+            case 'oldest': $query->orderBy('created_at', 'asc'); break;
+            case 'name': $query->orderBy('nama', 'asc'); break;
+            case 'newest': default: $query->orderBy('created_at', 'desc'); break;
         }
 
         $dokumenPaginator = $query->with('user:id,name,email')
                                 ->paginate(10)
                                 ->withQueryString();
 
+        // Statistik
         $stats = [
             'total' => ArsipPenelitianKesehatan::count(),
             'pending' => ArsipPenelitianKesehatan::where('status', 'pending')->count(),
