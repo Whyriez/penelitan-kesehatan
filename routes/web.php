@@ -17,17 +17,31 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::group(['middleware' => ['auth']], function () {
     //? Admin
     Route::middleware(['cekrole:admin'])->group(function () {
-        Route::resource('admin', AdminController::class)->names('admin');
-        Route::get('/dokumen-masuk', [DokumenMasukController::class, 'index'])->name('admin.dokumen_masuk');
+        Route::get('/admin/dokumen-masuk', [DokumenMasukController::class, 'index'])->name('admin.dokumen_masuk');
 
-        Route::get('/validasi-dokumen', [ValidasiDokumenController::class, 'index'])->name('admin.validasi_dokumen');
-        Route::patch('/validasi-dokumen/{arsip}/validasi', [ValidasiDokumenController::class, 'validasi'])->name('admin.dokumen.lakukanValidasi');
-        Route::patch('/validasi-dokumen/{arsip}/revisi', [ValidasiDokumenController::class, 'revisi'])->name('admin.dokumen.lakukanRevisi');
+        Route::resource('admin', AdminController::class)->names('admin');
 
         Route::resource('/kelola-user', \App\Http\Controllers\Admin\UserController::class)
             ->parameters(['kelola-user' => 'user'])
             ->names('admin.users')
             ->except(['show']);
+
+        Route::resource('/jenis-izin', \App\Http\Controllers\Admin\JenisIzinController::class)
+            ->parameters(['jenis-izin' => 'jenisIzin']) // Agar variabel di controller jadi $jenisIzin
+            ->names('admin.jenis_izin');
+    });
+
+    //? Operator
+    Route::middleware(['cekrole:operator'])->group(function () {
+        Route::get('/operator/dokumen-masuk', [\App\Http\Controllers\Operator\DokumenMasukController::class, 'index'])->name('operator.dokumen_masuk');
+
+        Route::resource('operator', \App\Http\Controllers\Operator\OperatorController::class)->names('operator');
+
+        Route::get('/validasi-dokumen', [\App\Http\Controllers\Operator\ValidasiDokumenController::class, 'index'])->name('operator.validasi_dokumen');
+        Route::patch('/validasi-dokumen/{arsip}/validasi', [\App\Http\Controllers\Operator\ValidasiDokumenController::class, 'validasi'])->name('operator.dokumen.lakukanValidasi');
+        Route::patch('/validasi-dokumen/{arsip}/revisi', [\App\Http\Controllers\Operator\ValidasiDokumenController::class, 'revisi'])->name('operator.dokumen.lakukanRevisi');
+
+        Route::get('/operator/dokumen-masuk/export', [\App\Http\Controllers\Operator\DokumenMasukController::class, 'export'])->name('operator.dokumen_masuk.export');
     });
 
     //? User

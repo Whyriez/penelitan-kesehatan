@@ -20,8 +20,9 @@ return new class extends Migration
             $table->string('nomor_identitas')->nullable()->unique();
             $table->string('gelar_jabatan')->nullable();
             $table->string('department')->nullable();
+            $table->string('alamat')->nullable();
 
-            $table->enum('role', ['admin', 'user'])->default('user');
+            $table->enum('role', ['admin', 'operator', 'user'])->default('user');
 
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

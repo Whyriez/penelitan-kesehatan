@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\ArsipPenelitianKesehatan;
+use App\Models\JenisIzin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -23,59 +24,59 @@ class DokumenController extends Controller
 
     public function indexUpload()
     {
+        // Ambil data Jenis Izin untuk Dropdown
+        $jenisIzin = JenisIzin::all();
+
         return view('pages.user.upload.index', [
-            'syarat' => $this->syaratDokumen
+            'syarat' => $this->syaratDokumen,
+            'jenisIzin' => $jenisIzin // Kirim ke View
         ]);
     }
 
     public function storeUpload(Request $request)
     {
-        // 1. Validasi Input Dasar
+        // 1. Validasi
         $request->validate([
+            'jenis_izin_id' => 'required|exists:jenis_izins,id', // Validasi Dropdown
             'nama-dokumen' => 'required|string|max:255',
-            'tanggal-upload' => 'required|date',
+            'nomor-surat' => 'required|string|max:100',
+            'tempat_praktek' => 'required|string|max:255', // Validasi Tempat
+            'tanggal-surat' => 'required|date',
             'deskripsi' => 'required|string',
-            'dokumen' => 'required|array', // Array input file
-            'dokumen.*' => 'required|file|mimes:pdf,jpg,jpeg,png|max:10240', // Validasi tiap file
-        ], [
-            'dokumen.*.required' => 'Berkas ini wajib diunggah.',
-            'dokumen.*.mimes' => 'Format file harus PDF atau Gambar (JPG/PNG).',
-            'dokumen.*.max' => 'Ukuran file maksimal 10MB per berkas.',
+            'dokumen' => 'required|array',
+            'dokumen.*' => 'required|file|mimes:pdf,jpg,jpeg,png|max:10240',
         ]);
 
         try {
             $filePaths = [];
 
-            // 2. Loop setiap file yang diupload
+            // 2. Upload Files
             foreach ($request->file('dokumen') as $key => $file) {
-                // Generate nama file unik: time_jenis_namaasli
                 $filename = time() . '_' . $key . '.' . $file->getClientOriginalExtension();
-                
-                // Simpan ke storage (folder: dokumen_kesehatan)
                 $path = $file->storeAs('dokumen_kesehatan/' . Auth::id(), $filename, 'public');
-                
-                // Masukkan ke array untuk disimpan di DB
                 $filePaths[$key] = $path;
             }
 
             // 3. Simpan ke Database
             ArsipPenelitianKesehatan::create([
                 'user_id' => Auth::id(),
+                'jenis_izin_id' => $request->input('jenis_izin_id'), // Simpan ID Jenis
                 'nama' => $request->input('nama-dokumen'),
+                'nomor_surat' => $request->input('nomor-surat'),
+                'tempat_praktek' => $request->input('tempat_praktek'), // Simpan Tempat
+                'tgl_surat' => $request->input('tanggal-surat'),
                 'deskripsi' => $request->input('deskripsi'),
-                'tgl_upload' => $request->input('tanggal-upload'),
-                'file' => $filePaths, // Laravel otomatis convert array ke JSON (jika model dicasting)
+                'file' => $filePaths,
                 'status' => 'pending',
+                // nomor_izin & tgl_terbit biarkan NULL dulu
             ]);
 
             return redirect()->route('user.riwayat')
-                ->with('success', 'Pengajuan Izin Kesehatan berhasil dikirim!');
+                ->with('success', 'Pengajuan Izin berhasil dikirim!');
 
         } catch (\Exception $e) {
-            Log::error('Error uploading health document: ' . $e->getMessage());
-            return redirect()->back()
-                ->withInput()
-                ->with('error', 'Terjadi kesalahan sistem. Silakan coba lagi.');
+            Log::error('Error upload: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with('error', 'Gagal: ' . $e->getMessage());
         }
     }
 
@@ -84,38 +85,50 @@ class DokumenController extends Controller
     {
         if ($arsip->user_id !== Auth::id()) abort(403);
 
+        // Ambil Data Jenis Izin untuk Dropdown saat Edit
+        $jenisIzin = JenisIzin::all();
+
         return view('pages.user.riwayat.edit', [
             'arsip' => $arsip,
-            'syarat' => $this->syaratDokumen
+            'syarat' => $this->syaratDokumen,
+            'jenisIzin' => $jenisIzin // Kirim variabel ini
         ]);
     }
 
     public function update(Request $request, ArsipPenelitianKesehatan $arsip)
     {
         if ($arsip->user_id !== Auth::id()) abort(403);
-        
-        // Hanya boleh update jika status pending/revisi
+
         if (!in_array($arsip->status, ['pending', 'revisi'])) {
             return redirect()->route('user.riwayat')->with('error', 'Dokumen terkunci.');
         }
 
+        // 1. Tambahkan Validasi untuk Field Baru
         $request->validate([
-            'nama' => 'required|string',
+            'jenis_izin_id' => 'required|exists:jenis_izins,id',
+            'nama' => 'required|string|max:255',
+            'nomor-surat' => 'required|string|max:100',
+            'tempat_praktek' => 'required|string|max:255',
+            'tanggal-surat' => 'required|date',
             'deskripsi' => 'required|string',
             'dokumen.*' => 'nullable|file|mimes:pdf,jpg,png|max:10240',
         ]);
 
         try {
-            $arsip->nama = $request->nama;
-            $arsip->deskripsi = $request->deskripsi;
+            // 2. Update Data Text
+            $arsip->jenis_izin_id = $request->input('jenis_izin_id');
+            $arsip->nama = $request->input('nama');
+            $arsip->nomor_surat = $request->input('nomor-surat');
+            $arsip->tempat_praktek = $request->input('tempat_praktek');
+            $arsip->tgl_surat = $request->input('tanggal-surat');
+            $arsip->deskripsi = $request->input('deskripsi');
 
-            // Ambil data file lama
+            // 3. Update File (Partial Update)
             $currentFiles = is_array($arsip->file) ? $arsip->file : [];
 
-            // Cek jika ada file baru yang diupload (Revisi sebagian)
             if ($request->hasFile('dokumen')) {
                 foreach ($request->file('dokumen') as $key => $file) {
-                    // Hapus file lama fisik jika ada
+                    // Hapus file lama jika ada
                     if (isset($currentFiles[$key]) && Storage::disk('public')->exists($currentFiles[$key])) {
                         Storage::disk('public')->delete($currentFiles[$key]);
                     }
@@ -123,15 +136,19 @@ class DokumenController extends Controller
                     // Upload file baru
                     $filename = time() . '_' . $key . '.' . $file->getClientOriginalExtension();
                     $path = $file->storeAs('dokumen_kesehatan/' . Auth::id(), $filename, 'public');
-                    
-                    // Update array
+
+                    // Update array path
                     $currentFiles[$key] = $path;
                 }
             }
 
             $arsip->file = $currentFiles;
-            $arsip->status = 'pending'; // Reset status jadi pending agar admin cek ulang
-            $arsip->catatan_revisi = null; // Hapus catatan revisi lama
+
+            // Reset status agar Admin memeriksa ulang revisinya
+            $arsip->status = 'pending';
+            // Opsional: Kosongkan catatan revisi lama agar bersih
+            // $arsip->catatan_revisi = null;
+
             $arsip->save();
 
             return redirect()->route('user.riwayat')

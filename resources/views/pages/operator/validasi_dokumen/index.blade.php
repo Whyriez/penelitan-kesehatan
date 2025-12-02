@@ -297,7 +297,7 @@
                             class="px-5 py-2 bg-amber-500 text-white font-medium rounded-lg hover:bg-amber-600 shadow-sm">
                             ⚠️ Minta Revisi
                         </button>
-                        <form action="{{ route('admin.dokumen.lakukanValidasi', $doc->id) }}" method="POST"
+                        <form action="{{ route('operator.dokumen.lakukanValidasi', $doc->id) }}" method="POST"
                             onsubmit="return confirm('Yakin validasi dokumen ini?')">
                             @csrf @method('PATCH')
                             <button type="submit"
@@ -327,7 +327,7 @@
                         </div>
 
                         <!-- Form yang lebih terstruktur -->
-                        <form action="{{ route('admin.dokumen.lakukanRevisi', $doc->id) }}" method="POST">
+                        <form action="{{ route('operator.dokumen.lakukanRevisi', $doc->id) }}" method="POST">
                             @csrf @method('PATCH')
 
                             <!-- Label untuk textarea -->

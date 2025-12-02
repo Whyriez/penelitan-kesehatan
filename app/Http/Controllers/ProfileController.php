@@ -34,11 +34,13 @@ class ProfileController extends Controller
             ],
             'nomor_telepon' => ['required', 'string', 'max:20'],
             'institusi' => ['required', 'string', 'max:255'],
+            // Tambahkan validasi alamat
+            'alamat' => ['nullable', 'string', 'max:255'],
             'nomor_identitas' => [
                 'nullable',
                 'string',
                 'max:50',
-                Rule::unique(User::class)->ignore($user->id) 
+                Rule::unique(User::class)->ignore($user->id)
             ],
             'gelar_jabatan' => ['nullable', 'string', 'max:100'],
             'department' => ['nullable', 'string', 'max:100'],

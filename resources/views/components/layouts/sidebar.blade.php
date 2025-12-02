@@ -1,12 +1,12 @@
 <div id="sidebar"
-    class="sidebar-transition bg-white border-r border-gray-200 w-64 h-full flex flex-col fixed md:relative z-20 md:translate-x-0 sidebar-hidden md:sidebar-visible shadow-sm">
+     class="sidebar-transition bg-white border-r border-gray-200 w-64 h-full flex flex-col fixed md:relative z-20 md:translate-x-0 sidebar-hidden md:sidebar-visible shadow-sm">
     <!-- Logo -->
     <div class="p-6 border-b border-gray-100">
         <div class="flex items-center space-x-3">
             <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
                 <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
                     </path>
                 </svg>
             </div>
@@ -36,14 +36,15 @@
                     'flex items-center space-x-3 px-3 py-2 rounded-md transition-colors',
                     'bg-green-50 text-green-700 border border-green-100' => request()->routeIs(
                         $dashboardRoutes),
-                
+
                     'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->routeIs(
                         $dashboardRoutes),
                 ])>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
-                    </svg><span class="text-sm">Dashboard</span>
+                              d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                    </svg>
+                    <span class="text-sm">Dashboard</span>
                 </a>
             </li>
             @if (Auth::user()->role === 'admin')
@@ -57,25 +58,29 @@
                     ])>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
                             </path>
-                        </svg><span class="text-sm">Data Dokumen Masuk</span>
+                        </svg>
+                        <span class="text-sm">Data Dokumen Masuk</span>
                     </a>
                 </li>
+
                 <li>
-                    <a href="{{ route('admin.validasi_dokumen') }}" @class([
-                        'flex items-center space-x-3 px-3 py-2 rounded-md',
-                        'bg-green-50 text-green-700 border border-green-100' => request()->routeIs(
-                            'admin.validasi_dokumen'),
-                        'text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors' => !request()->routeIs(
-                            'admin.validasi_dokumen'),
-                    ])>
+                    <a href="{{ route('admin.jenis_izin.index') }}" @class([
+        'flex items-center space-x-3 px-3 py-2 rounded-md',
+        'bg-green-50 text-green-700 border border-green-100' => request()->routeIs('admin.jenis_izin.*'),
+        'text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors' => !request()->routeIs('admin.jenis_izin.*'),
+    ])>
+                        {{-- Icon Dokumen / Sertifikat --}}
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg><span class="text-sm">Validasi Dokumen</span>
+                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                            </path>
+                        </svg>
+                        <span class="text-sm">Jenis Izin</span>
                     </a>
                 </li>
+
                 <li>
                     <a href="{{ route('admin.users.index') }}" @class([
                         'flex items-center space-x-3 px-3 py-2 rounded-md',
@@ -86,9 +91,43 @@
                     ])>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z">
+                                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z">
                             </path>
-                        </svg><span class="text-sm">Kelola User</span>
+                        </svg>
+                        <span class="text-sm">Kelola User</span>
+                    </a>
+                </li>
+
+            @elseif(Auth::user()->role === 'operator')
+                <li>
+                    <a href="{{ route('operator.dokumen_masuk') }}" @class([
+                        'flex items-center space-x-3 px-3 py-2 rounded-md',
+                        'bg-green-50 text-green-700 border border-green-100' => request()->routeIs(
+                            'operator.dokumen_masuk'),
+                        'text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors' => !request()->routeIs(
+                            'operator.dokumen_masuk'),
+                    ])>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                            </path>
+                        </svg>
+                        <span class="text-sm">Data Dokumen Masuk</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('operator.validasi_dokumen') }}" @class([
+                        'flex items-center space-x-3 px-3 py-2 rounded-md',
+                        'bg-green-50 text-green-700 border border-green-100' => request()->routeIs(
+                            'operator.validasi_dokumen'),
+                        'text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors' => !request()->routeIs(
+                            'operator.validasi_dokumen'),
+                    ])>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="text-sm">Validasi Dokumen</span>
                     </a>
                 </li>
             @else
@@ -102,9 +141,10 @@
                     ])>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
+                                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
                             </path>
-                        </svg><span class="text-sm">Upload Dokumen</span>
+                        </svg>
+                        <span class="text-sm">Upload Dokumen</span>
                     </a>
                 </li>
                 <li>
@@ -117,8 +157,9 @@
                     ])>
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg><span class="text-sm">Riwayat</span>
+                                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="text-sm">Riwayat</span>
                     </a>
                 </li>
             @endif
@@ -132,8 +173,9 @@
                 ])>
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                    </svg><span class="text-sm">Profil</span>
+                              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    <span class="text-sm">Profil</span>
                 </a>
             </li>
 
@@ -144,12 +186,13 @@
         <form action="{{ route('logout') }}" method="POST">
             @csrf
             <button type="submit"
-                class="flex w-full items-center space-x-3 px-3 py-2 rounded-md text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors">
+                    class="flex w-full items-center space-x-3 px-3 py-2 rounded-md text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
                     </path>
-                </svg><span class="text-sm">Logout</span>
+                </svg>
+                <span class="text-sm">Logout</span>
             </button>
         </form>
     </div>

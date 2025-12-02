@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -14,28 +15,58 @@ class AkunSeeder extends Seeder
      */
     public function run(): void
     {
+        $now = Carbon::now();
+
         DB::table('users')->insert([
+            // 1. Akun Admin (Dinas Kesehatan / Admin Sistem)
             [
-                'name' => 'Admin',
+                'name' => 'Administrator Sistem',
                 'email' => 'admin@gmail.com',
-                'password' => Hash::make('123'),
+                'password' => Hash::make('123'), // Ganti password yang aman nanti
                 'role' => 'admin',
-                'nomor_telepon' => '080000000001',
-                'institusi' => 'Administrator Sistem',
+                'nomor_telepon' => '081200000001',
+                'institusi' => 'Dinas Kesehatan Prov. Gorontalo',
                 'nomor_identitas' => 'ADMIN001',
-                'gelar_jabatan' => 'Administrator',
-                'department' => 'IT',
+                'gelar_jabatan' => 'Super Admin',
+                'department' => 'IT & Data',
+                'alamat' => 'Jl. Jendral Sudirman No. 1',
+                'email_verified_at' => $now,
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
+
+            // 2. Akun Operator (Verifikator Berkas - Opsional)
             [
-                'name' => 'User',
+                'name' => 'Operator Verifikator',
+                'email' => 'operator@gmail.com',
+                'password' => Hash::make('123'),
+                'role' => 'operator',
+                'nomor_telepon' => '081200000002',
+                'institusi' => 'Dinas Kesehatan Prov. Gorontalo',
+                'nomor_identitas' => 'OPR001',
+                'gelar_jabatan' => 'Staf SDK',
+                'department' => 'Sumber Daya Kesehatan',
+                'alamat' => 'Jl. Jendral Sudirman No. 1',
+                'email_verified_at' => $now,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+
+            // 3. Akun User (Mahasiswa Peneliti)
+            [
+                'name' => 'Mhs (Mahasiswa)',
                 'email' => 'user@gmail.com',
                 'password' => Hash::make('123'),
                 'role' => 'user',
-                'nomor_telepon' => '081234567890',
-                'institusi' => 'Universitas Contoh',
-                'nomor_identitas' => '123456789',
+                'nomor_telepon' => '085212345678',
+                'institusi' => 'Universitas Negeri Gorontalo',
+                'nomor_identitas' => '531400000',
                 'gelar_jabatan' => 'Mahasiswa',
                 'department' => 'Teknik Informatika',
+                'alamat' => 'Jl. Pangeran Hidayat',
+                'email_verified_at' => $now,
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
         ]);
     }

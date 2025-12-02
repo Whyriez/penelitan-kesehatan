@@ -22,10 +22,11 @@ class User extends Authenticatable
         'email',
         'password',
         'nomor_telepon',
-        'institusi', 
+        'institusi',
         'nomor_identitas',
         'gelar_jabatan',
         'department',
+        'alamat',
         'role',
     ];
 
