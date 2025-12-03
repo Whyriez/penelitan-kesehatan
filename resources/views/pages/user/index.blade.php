@@ -7,7 +7,8 @@
             <div class="bg-gradient-to-r from-sky-500 to-blue-600 rounded-xl shadow-lg p-4 sm:p-6 text-white fade-in">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                     <div class="mb-4 md:mb-0">
-                        <h2 class="text-xl sm:text-2xl font-bold mb-2">Selamat Datang, {{ $user->name ?? 'User' }}!</h2>
+                        <h2 class="text-xl sm:text-2xl font-bold mb-2">Selamat Datang di Sistem Izin Kesehatan DPMPTSP Bone Bolango!
+                        </h2>
                         <p class="text-sky-100 text-sm sm:text-base">Pantau status dokumen Anda secara real-time di dashboard ini.</p>
                     </div>
                     <div>
@@ -255,7 +256,7 @@
         transform: translateY(-2px);
         transition: all 0.2s ease-in-out;
     }
-    
+
     .status-badge {
         display: inline-flex;
         align-items: center;

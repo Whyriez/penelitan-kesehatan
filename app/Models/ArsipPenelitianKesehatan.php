@@ -23,6 +23,7 @@ class ArsipPenelitianKesehatan extends Model
         'file',
         'status',
         'catatan_revisi',
+        'file_revisi',
         'tempat_praktek', // Baru
     ];
 
@@ -30,6 +31,7 @@ class ArsipPenelitianKesehatan extends Model
         'file' => 'array',
         'tgl_surat' => 'date',
         'tgl_terbit' => 'date',
+        'file_revisi' => 'array',
     ];
 
 

@@ -4,24 +4,32 @@
 @section('content')
     <main class="flex-1 p-4 sm:p-6 lg:p-8 bg-gray-50 overflow-x-auto">
         <div class="max-w-7xl mx-auto space-y-8">
-            {{-- ... Bagian Alert tetap sama ... --}}
+
+            {{-- Flash Message Error --}}
+            @if(session('error'))
+                <div class="bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-sm">
+                    <p class="font-bold">Terjadi Kesalahan</p>
+                    <p>{{ session('error') }}</p>
+                </div>
+            @endif
 
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 fade-in">
                 <div class="p-6 border-b border-gray-200">
                     <h2 class="text-xl font-semibold text-gray-900 flex items-center">
                         Pengajuan Izin Kesehatan / Praktik
                     </h2>
-                    <p class="text-sm text-gray-500 mt-1">Lengkapi formulir di bawah ini.</p>
+                    <p class="text-sm text-gray-500 mt-1">Lengkapi formulir di bawah ini atau simpan sebagai draft.</p>
                 </div>
 
                 <form action="{{ route('user.upload.store') }}" method="POST" enctype="multipart/form-data"
                       class="p-6 space-y-6">
                     @csrf
 
-                    {{-- Error Validation Summary --}}
+                    {{-- Error Validation --}}
                     @if ($errors->any())
                         <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
-                            <ul class="list-disc list-inside mt-1 text-sm">
+                            <strong class="block font-bold mb-1">Mohon periksa kembali:</strong>
+                            <ul class="list-disc list-inside text-sm">
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
@@ -29,16 +37,14 @@
                         </div>
                     @endif
 
-                    {{-- 1. Jenis Izin (DROPDOWN DINAMIS) --}}
+                    {{-- 1. Jenis Izin --}}
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Izin / Layanan <span
-                                class="text-red-500">*</span></label>
-                        <select name="jenis_izin_id" required
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Jenis Izin / Layanan</label>
+                        <select name="jenis_izin_id"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 bg-white">
                             <option value="">-- Pilih Jenis Izin --</option>
                             @foreach($jenisIzin as $izin)
-                                <option
-                                    value="{{ $izin->id }}" {{ old('jenis_izin_id') == $izin->id ? 'selected' : '' }}>
+                                <option value="{{ $izin->id }}" {{ old('jenis_izin_id') == $izin->id ? 'selected' : '' }}>
                                     {{ $izin->nama }} ({{ $izin->kategori }})
                                 </option>
                             @endforeach
@@ -46,38 +52,36 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {{-- Nama Pengajuan --}}
+                        {{-- Nama Pengajuan (WAJIB BAHKAN UNTUK DRAFT AGAR ADA JUDULNYA) --}}
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Judul
-                                Penelitian</label>
-                            <input type="text" name="nama-dokumen" value="{{ old('nama-dokumen') }}"
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Judul Dokumen / Nama Pemohon <span class="text-red-500">*</span></label>
+                            <input type="text" name="nama-dokumen" value="{{ old('nama-dokumen') }}" required
                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                                   placeholder="Nama Lengkap atau Judul Skripsi">
+                                   placeholder="Nama Lengkap atau Judul Pengajuan">
                         </div>
 
-                        {{-- Nomor Surat (BARU) --}}
+                        {{-- Nomor Surat --}}
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Nomor Surat Permohonan <span class="text-red-500">*</span></label>
-                            <input type="text" name="nomor-surat" value="{{ old('nomor-surat') }}" required
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nomor Surat Permohonan</label>
+                            <input type="text" name="nomor-surat" value="{{ old('nomor-surat') }}"
                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                                    placeholder="Contoh: 800/RSUD-TK/932/VIII/2025">
                         </div>
 
                         {{-- Tanggal Surat --}}
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Surat <span class="text-red-500">*</span></label>
-                            <input type="date" name="tanggal-surat" value="{{ old('tanggal-surat', date('Y-m-d')) }}" required
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal Surat</label>
+                            <input type="date" name="tanggal-surat" value="{{ old('tanggal-surat', date('Y-m-d')) }}"
                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                         </div>
-                    </div>
 
-                    {{-- Tempat Praktik (BARU) --}}
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Tempat Praktik / Lokasi Penelitian
-                            <span class="text-red-500">*</span></label>
-                        <input type="text" name="tempat_praktek" value="{{ old('tempat_praktek') }}" required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                               placeholder="Contoh: RSUD Prof. Aloe Saboe atau Puskesmas Kota Tengah">
+                        {{-- Tempat Praktik --}}
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tempat Praktik / Lokasi Penelitian</label>
+                            <input type="text" name="tempat_praktek" value="{{ old('tempat_praktek') }}"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                                   placeholder="Contoh: RSUD Prof. Aloe Saboe">
+                        </div>
                     </div>
 
                     {{-- Deskripsi --}}
@@ -85,64 +89,60 @@
                         <label class="block text-sm font-medium text-gray-700 mb-2">Keterangan Tambahan</label>
                         <textarea name="deskripsi" rows="3"
                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                                  placeholder="Catatan...">{{ old('deskripsi') }}</textarea>
+                                  placeholder="Berikan keterangan singkat...">{{ old('deskripsi') }}</textarea>
                     </div>
 
                     <hr class="border-gray-200">
 
-                    {{-- 2. Upload Berkas (Looping) --}}
+                    {{-- 2. Upload Berkas --}}
                     <div>
-                        <h3 class="text-lg font-medium text-gray-900 mb-4">Kelengkapan Berkas</h3>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-medium text-gray-900">Kelengkapan Berkas</h3>
+                            <span class="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-full border border-blue-100">
+                                PDF, JPG, PNG (Max 500MB)
+                            </span>
+                        </div>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             @foreach($syarat as $key => $label)
-                                <div
-                                    class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-blue-300 transition-colors">
+                                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-blue-300 transition-colors {{ $errors->has('dokumen.'.$key) ? 'border-red-300 bg-red-50' : '' }}">
                                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                                         {{ $loop->iteration }}. {{ $label }}
                                     </label>
                                     <input type="file" name="dokumen[{{ $key }}]" accept=".pdf,.jpg,.jpeg,.png"
-                                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition-all cursor-pointer">
+                                           class="block w-full text-sm text-gray-500
+                                           file:mr-4 file:py-2 file:px-4
+                                           file:rounded-full file:border-0
+                                           file:bg-white file:text-blue-700
+                                           file:font-semibold file:shadow-sm
+                                           hover:file:bg-blue-50 transition-all cursor-pointer">
+
+                                    @error('dokumen.'.$key)
+                                    <p class="text-red-600 text-xs mt-2">{{ $message }}</p>
+                                    @enderror
                                 </div>
                             @endforeach
                         </div>
                     </div>
 
-                    <div class="flex justify-end pt-4">
-                        <button type="submit" id="submit-btn"
-                                class="px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 shadow-lg">
+                    {{-- Action Buttons --}}
+                    <div class="flex flex-col sm:flex-row justify-end gap-3 pt-4 border-t border-gray-100">
+                        {{-- Tombol Draft --}}
+                        <button type="submit" name="action" value="draft"
+                                class="px-6 py-3 bg-gray-500 text-white font-medium rounded-lg hover:bg-gray-600 shadow-sm transition-all flex justify-center items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+                            Simpan Draft
+                        </button>
+
+                        {{-- Tombol Submit --}}
+                        <button type="submit" name="action" value="submit"
+                                class="px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 shadow-lg transition-all flex justify-center items-center">
                             <span id="btn-text">Kirim Pengajuan</span>
+                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                         </button>
                     </div>
                 </form>
             </div>
         </div>
     </main>
-
-    {{-- Script hanya untuk animasi tombol submit, preview file sudah dihandle browser --}}
-    <script>
-        document.querySelector('form').addEventListener('submit', function () {
-            const btn = document.getElementById('submit-btn');
-            const text = document.getElementById('btn-text');
-            btn.disabled = true;
-            btn.classList.add('opacity-75', 'cursor-not-allowed');
-            text.textContent = 'Sedang Mengupload...';
-        });
-    </script>
-
-    <style>
-        .fade-in {
-            animation: fadeIn 0.4s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
 @endsection

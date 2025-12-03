@@ -70,16 +70,14 @@ class ValidasiDokumenController extends Controller
     public function validasi(ArsipPenelitianKesehatan $arsip)
     {
         $now = Carbon::now();
-
-        // 1. Generate Nomor Izin Otomatis
         $nomorBaru = $this->generateNomorIzin($arsip, $now);
 
-        // 2. Update Data
         $arsip->update([
             'status' => 'valid',
             'catatan_revisi' => null,
-            'tgl_terbit' => $now->toDateString(), // Isi Tanggal Terbit Hari Ini
-            'nomor_izin' => $nomorBaru,           // Isi Nomor Izin
+            'file_revisi' => null, // Reset file revisi jika sudah valid
+            'tgl_terbit' => $now->toDateString(),
+            'nomor_izin' => $nomorBaru,
         ]);
 
         return redirect()->route('operator.validasi_dokumen')
@@ -90,14 +88,17 @@ class ValidasiDokumenController extends Controller
     {
         $request->validate([
             'catatan_revisi' => 'required|string|min:5',
+            'file_revisi' => 'required|array',   // Wajib array
+            'file_revisi.*' => 'string',         // Isi array harus string (key file)
         ], [
             'catatan_revisi.required' => 'Catatan revisi wajib diisi.',
-            'catatan_revisi.min' => 'Catatan revisi terlalu pendek.',
+            'file_revisi.required' => 'Harap centang minimal satu file yang perlu direvisi.',
         ]);
 
         $arsip->update([
             'status' => 'revisi',
-            'catatan_revisi' => $request->catatan_revisi
+            'catatan_revisi' => $request->catatan_revisi,
+            'file_revisi' => $request->file_revisi // Simpan array key file yang salah
         ]);
 
         return redirect()->route('operator.validasi_dokumen')
@@ -106,10 +107,8 @@ class ValidasiDokumenController extends Controller
 
     private function generateNomorIzin($arsip, $date)
     {
-        // A. Tentukan Kode Berdasarkan Jenis Izin (Sesuai gambar Anda)
-        // Ambil nama jenis izin dari relasi
         $namaIzin = strtoupper($arsip->jenisIzin->nama ?? '');
-        $kode = 'SK'; // Default jika tidak dikenal
+        $kode = 'SK';
 
         if (str_contains($namaIzin, 'PERAWAT')) {
             $kode = 'SIPP';
@@ -120,15 +119,13 @@ class ValidasiDokumenController extends Controller
         } elseif (str_contains($namaIzin, 'BIDAN')) {
             $kode = 'SIPB';
         } elseif (str_contains($namaIzin, 'FISIOTERAPIS')) {
-            $kode = 'F'; // Sesuai gambar
+            $kode = 'F';
         } elseif (str_contains($namaIzin, 'TTK')) {
-            $kode = 'SIPTTK'; // Sesuai gambar
+            $kode = 'SIPTTK';
         }
 
-        // B. Tentukan Nomor Urut (Auto Increment per Tahun)
         $tahun = $date->year;
 
-        // Cari nomor terakhir yang sudah VALID di tahun ini
         $lastDoc = ArsipPenelitianKesehatan::whereYear('tgl_terbit', $tahun)
             ->whereNotNull('nomor_izin')
             ->where('status', 'valid')
@@ -136,28 +133,18 @@ class ValidasiDokumenController extends Controller
             ->orderBy('id', 'desc')
             ->first();
 
-        $nextNumber = 1; // Default mulai dari 1
+        $nextNumber = 1;
 
         if ($lastDoc) {
-            // Format DB: 503/DPMPTSP-BB/SIPP/0042/VIII/2025
-            // Kita pecah string berdasarkan '/'
             $parts = explode('/', $lastDoc->nomor_izin);
-
-            // Angka urut ada di index ke-3 (array mulai dari 0)
-            // 0: 503, 1: DPMPTSP-BB, 2: KODE, 3: NOMOR, 4: BULAN, 5: TAHUN
             if (isset($parts[3]) && is_numeric($parts[3])) {
                 $nextNumber = (int)$parts[3] + 1;
             }
         }
 
-        // Pad dengan 0 agar jadi 4 digit (misal: 1 -> 0001, 42 -> 0042)
         $formattedNumber = str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
-
-        // C. Tentukan Bulan Romawi
         $bulanRomawi = $this->getRomawi($date->month);
 
-        // D. Gabungkan Menjadi String Final
-        // Format: 503/DPMPTSP-BB/[KODE]/[NOMOR]/[ROMAWI]/[TAHUN]
         return "503/DPMPTSP-BB/{$kode}/{$formattedNumber}/{$bulanRomawi}/{$tahun}";
     }
 
