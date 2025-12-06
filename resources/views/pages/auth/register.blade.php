@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Daftar - Sistem Arsip Penelitian Kesehatan</title>
+    <title>Daftar - Sistem Kearsipan Izin Kesehatan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
         rel="stylesheet" />
@@ -90,7 +90,7 @@
             padding-left: 40px;
             transition: all 0.3s ease;
         }
-        
+
         /* Menyesuaikan posisi ikon ketika label ada di atas */
         .input-group .input-icon {
              top: 60%; /* Sesuaikan jika label 1 baris */
@@ -173,7 +173,7 @@
         .compact-footer {
             margin-top: 1rem;
         }
-        
+
         /* Icon kesehatan */
         .health-icon {
             background: linear-gradient(135deg, #047857 0%, #10b981 100%);
@@ -196,9 +196,9 @@
                         <path d="M150 150C150 132.431 164.431 118 182 118C199.569 118 214 132.431 214 150V182H246C263.569 182 278 196.431 278 214C278 231.569 263.569 246 246 246H214V278C214 295.569 199.569 310 182 310C164.431 310 150 295.569 150 278V246H118C100.431 246 86 231.569 86 214C86 196.431 100.431 182 118 182H150V150Z" fill="white" fill-opacity="0.7"/>
                     </svg>
                 </div>
-                <h2 class="text-xl font-semibold mb-3">Arsip Penelitian Kesehatan Terpusat</h2>
+                <h2 class="text-xl font-semibold mb-3">Arsip Izin Kesehatan Terpusat</h2>
                 <p class="text-green-100 leading-relaxed text-sm">
-                    Platform digital untuk mengelola, menyimpan, dan mengakses arsip penelitian
+                    Platform digital untuk mengelola, menyimpan, dan mengakses arsip izin
                     kesehatan secara terstruktur dan aman.
                 </p>
             </div>
@@ -215,7 +215,7 @@
                         </svg>
                     </div>
                     <h1 id="system-title" class="text-xl font-bold text-gray-900 mb-1 compact-title">
-                        Sistem Arsip Penelitian Kesehatan
+                        Sistem Kearsipan Izin Kesehatan
                     </h1>
                     <p id="welcome-text" class="text-gray-600 text-sm">
                         Silakan mendaftar untuk membuat akun baru
@@ -453,7 +453,7 @@
                     <p>
                         © 2025 <span id="institution-name">Kementerian Kesehatan Republik Indonesia</span>
                     </p>
-                    <p class="mt-1">Sistem Arsip Penelitian Kesehatan v2.0</p>
+                    <p class="mt-1">Sistem Kearsipan Izin Kesehatan v2.0</p>
                 </div>
             </div>
         </div>

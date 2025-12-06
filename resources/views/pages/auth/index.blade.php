@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Login - Sistem Arsip Penelitian Kesehatan</title>
+    <title>Login - Sistem Kearsipan Izin Kesehatan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap"
         rel="stylesheet" />
@@ -105,14 +105,14 @@
                         <circle cx="80" cy="200" r="7" fill="rgba(255,255,255,0.3)" />
                     </svg>
                 </div>
-                <h2 class="text-xl font-semibold mb-3">Arsip Penelitian Kesehatan Terpusat</h2>
+                <h2 class="text-xl font-semibold mb-3">Arsip Izin Kesehatan Terpusat</h2>
                 <p class="text-green-100 leading-relaxed text-sm">
-                    Platform digital untuk mengelola, menyimpan, dan mengakses arsip penelitian
+                    Platform digital untuk mengelola, menyimpan, dan mengakses arsip izin
                     kesehatan secara terstruktur dan aman.
                 </p>
             </div>
         </div>
-        
+
         <div class="flex items-center justify-center p-4 lg:p-8 slide-in-right compact-form">
             <div class="w-full max-w-md">
                 <div class="text-center mb-6 fade-in">
@@ -124,15 +124,15 @@
                         </svg>
                     </div>
                     <h1 id="system-title" class="text-xl font-bold text-gray-900 mb-1 compact-title">
-                        Sistem Arsip Penelitian Kesehatan
+                        Sistem Kearsipan Izin Kesehatan
                     </h1>
                     <p id="welcome-text" class="text-gray-600 text-sm">
-                        Selamat datang di sistem arsip penelitian kesehatan
+                        Selamat datang di sistem kearsipan izin kesehatan
                     </p>
                 </div>
 
                 <div class="login-card rounded-2xl shadow-xl border border-white/20 compact-card fade-in">
-                    
+
                     @if (session('flash.error'))
                         <div class="mb-4 rounded-lg bg-red-100 p-3 text-sm text-red-700" role="alert">
                             {{ session('flash.error') }}
@@ -143,7 +143,7 @@
                             {{ session('flash.success') }}
                         </div>
                     @endif
-                    
+
                     {{-- Tampilkan error validasi Laravel --}}
                     @if ($errors->any())
                         <div class="mb-4 rounded-lg bg-red-100 p-3 text-sm text-red-700" role="alert">
@@ -169,7 +169,7 @@
                                     placeholder="Masukkan email" />
                             </div>
                         </div>
-                        
+
                         <div class="input-group">
                             <label for="password"
                                 class="block text-sm font-medium text-gray-700 mb-1">Password</label>
@@ -193,7 +193,7 @@
                                 </button>
                             </div>
                         </div>
-                        
+
                         <div class="flex justify-between items-center text-xs mt-3">
                             <a href="{{ route('auth.register') }}" class="text-green-600 hover:text-green-800 font-medium transition-colors">
                                 Daftar Akun Baru
@@ -220,7 +220,7 @@
                     <p>
                         © 2025 <span id="institution-name">Kementerian Kesehatan Republik Indonesia</span>
                     </p>
-                    <p class="mt-1">Sistem Arsip Penelitian Kesehatan v2.0</p>
+                    <p class="mt-1">Sistem Kearsipan Izin Kesehatan v2.0</p>
                 </div>
             </div>
         </div>
@@ -272,7 +272,7 @@
                 loginText.textContent = "Memproses...";
                 loginSpinner.classList.remove("hidden");
                 loginBtn.disabled = true;
-                
+
                 // Form akan di-submit secara normal ke server (PHP)
             });
         }

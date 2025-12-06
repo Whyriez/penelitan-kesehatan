@@ -26,30 +26,29 @@ class ProfileController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
+                'required', 'string', 'email', 'max:255',
                 Rule::unique(User::class)->ignore($user->id),
             ],
             'nomor_telepon' => ['required', 'string', 'max:20'],
             'institusi' => ['required', 'string', 'max:255'],
-            // Tambahkan validasi alamat
-            'alamat' => ['nullable', 'string', 'max:255'],
+
+            // UBAH DARI NULLABLE KE REQUIRED
+            'alamat' => ['required', 'string', 'max:255'],
             'nomor_identitas' => [
-                'nullable',
+                'required', // Wajib diisi
                 'string',
                 'max:50',
                 Rule::unique(User::class)->ignore($user->id)
             ],
-            'gelar_jabatan' => ['nullable', 'string', 'max:100'],
-            'department' => ['nullable', 'string', 'max:100'],
+            'gelar_jabatan' => ['required', 'string', 'max:100'], // Wajib diisi
+            'department' => ['required', 'string', 'max:100'],    // Wajib diisi
         ]);
 
         $user->update($validated);
 
-        return redirect()->route('profile')
-            ->with('success_profile', 'Informasi profil berhasil diperbarui.');
+        // Redirect kembali ke halaman sebelumnya (atau ke dashboard)
+        return redirect()->back()
+            ->with('success_profile', 'Informasi profil berhasil dilengkapi.');
     }
 
     public function updatePassword(Request $request)

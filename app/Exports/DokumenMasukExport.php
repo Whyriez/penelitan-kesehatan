@@ -21,7 +21,10 @@ class DokumenMasukExport implements FromView, ShouldAutoSize, WithStyles
 
     public function view(): View
     {
-        $query = ArsipPenelitianKesehatan::query()->with(['user', 'jenisIzin']);
+        $query = ArsipPenelitianKesehatan::query()
+            ->with(['user', 'jenisIzin'])
+            // MODIFIKASI: Hanya ambil data yang statusnya 'valid' (disetujui)
+            ->where('status', 'valid');
 
         // 1. Filter Search
         if (!empty($this->filters['search'])) {
@@ -35,10 +38,13 @@ class DokumenMasukExport implements FromView, ShouldAutoSize, WithStyles
             });
         }
 
-        // 2. Filter Status
+        // 2. Filter Status (DIHAPUS/KOMENTAR)
+        // Karena kita memaksa hanya export yang 'valid', filter dinamis ini tidak diperlukan lagi.
+        /*
         if (!empty($this->filters['status'])) {
             $query->where('status', $this->filters['status']);
         }
+        */
 
         // 3. Filter Tanggal
         if (!empty($this->filters['date_from'])) {
@@ -48,51 +54,49 @@ class DokumenMasukExport implements FromView, ShouldAutoSize, WithStyles
             $query->whereDate('created_at', '<=', $this->filters['date_to']);
         }
 
-        // Default Sort: Created At Descending (Sesuai Controller)
-        $query->orderBy('created_at', 'desc');
+        // Sorting default
+        $query->orderBy('jenis_izin_id', 'asc')
+            ->orderBy('created_at', 'desc');
 
+        // AMBIL DATA & GROUPING
+        $rawData = $query->get();
+
+        $groupedData = $rawData->groupBy(function ($item) {
+            return $item->jenisIzin->nama ?? 'Lainnya';
+        });
+
+        // --- Logika Penentuan Label Bulan ---
         $dateFrom = $this->filters['date_from'] ?? null;
         $dateTo = $this->filters['date_to'] ?? null;
-
         Carbon::setLocale('id');
 
         if ($dateFrom && $dateTo) {
             $start = Carbon::parse($dateFrom);
             $end = Carbon::parse($dateTo);
-
-            // Jika bulan dan tahun sama (contoh: 1 Agt - 31 Agt)
             if ($start->month === $end->month && $start->year === $end->year) {
                 $labelBulan = strtoupper($start->translatedFormat('F'));
-                // Output: AGUSTUS
             } else {
-                // Jika lintas bulan (contoh: 30 Agt - 2 Sep)
                 $labelBulan = strtoupper($start->translatedFormat('F')) . ' - ' . strtoupper($end->translatedFormat('F'));
-                // Output: AGUSTUS - SEPTEMBER
             }
-            $tahun = $start->year; // Ambil tahun dari filter
+            $tahun = $start->year;
         } elseif ($dateFrom) {
-            // Jika cuma isi tanggal awal
             $start = Carbon::parse($dateFrom);
             $labelBulan = strtoupper($start->translatedFormat('F'));
             $tahun = $start->year;
         } else {
-            // Jika tidak ada filter tanggal, pakai bulan saat ini (Default)
             $labelBulan = strtoupper(now()->translatedFormat('F'));
             $tahun = now()->year;
         }
 
         return view('pages.operator.exports.rekapan', [
-            'data' => $query->get(),
-            'bulan' => $labelBulan, // Variable ini dikirim ke View
+            'groupedData' => $groupedData,
+            'bulan' => $labelBulan,
             'tahun' => $tahun
         ]);
     }
 
-    // Optional: Styling manual kolom tertentu jika perlu
     public function styles(Worksheet $sheet)
     {
-        return [
-            // Style font default bisa ditaruh di sini atau di Blade
-        ];
+        return [];
     }
 }

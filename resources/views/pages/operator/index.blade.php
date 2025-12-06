@@ -1,5 +1,5 @@
 @extends('layouts.layout')
-@section('title', 'Admin Dashboard')
+@section('title', 'Operator Dashboard')
 
 @section('content')
     <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-x-auto">
@@ -148,7 +148,7 @@
                                     <p class="text-xs text-gray-400 mt-1">{{ $activity->created_at->diffForHumans() }}</p>
                                 </div>
                                 <span
-                                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
+                                    class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium
                                 {{ $activity->status === 'pending'
                                     ? 'bg-amber-100 text-amber-800'
                                     : ($activity->status === 'valid'
@@ -307,7 +307,7 @@
                         },
                         plugins: {
                             legend: {
-                                display: false 
+                                display: false
                             }
                         }
                     }

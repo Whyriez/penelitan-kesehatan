@@ -56,38 +56,54 @@
             {{-- FILTER SECTION --}}
             <form method="GET" action="{{ url()->current() }}" id="filter-form">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 fade-in">
-                    <div class="flex flex-col lg:flex-row lg:items-end gap-6">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 flex-1 min-w-0">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Cari</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                                    </div>
-                                    <input type="text" name="search" value="{{ $filters['search'] ?? '' }}" placeholder="Nama, Deskripsi, atau User..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+
+                    {{-- Menggunakan Grid 12 Kolom untuk kontrol yang lebih presisi --}}
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 items-end">
+
+                        {{-- 1. SEARCH (Mengambil 3 dari 12 bagian) --}}
+                        <div class="lg:col-span-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Cari</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                                 </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                                <select name="status" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
-                                    <option value="">Semua Status</option>
-                                    <option value="pending" {{ ($filters['status'] ?? '') == 'pending' ? 'selected' : '' }}>Menunggu Validasi</option>
-                                    <option value="valid" {{ ($filters['status'] ?? '') == 'valid' ? 'selected' : '' }}>Tervalidasi</option>
-                                    <option value="revisi" {{ ($filters['status'] ?? '') == 'revisi' ? 'selected' : '' }}>Perlu Revisi</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal</label>
-                                <div class="flex gap-2">
-                                    <input type="date" name="date_from" value="{{ $filters['date_from'] ?? '' }}" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm" />
-                                    <input type="date" name="date_to" value="{{ $filters['date_to'] ?? '' }}" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm" />
-                                </div>
+                                <input type="text" name="search" value="{{ $filters['search'] ?? '' }}" placeholder="Nama / Deskripsi..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
                             </div>
                         </div>
-                        <div class="flex gap-3 flex-shrink-0">
-                            <a href="{{ url()->current() }}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">Reset</a>
-                            <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">Filter</button>
+
+                        {{-- 2. STATUS (Mengambil 3 dari 12 bagian) --}}
+                        <div class="lg:col-span-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                            <select name="status" class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                <option value="">Semua Status</option>
+                                <option value="pending" {{ ($filters['status'] ?? '') == 'pending' ? 'selected' : '' }}>Menunggu Validasi</option>
+                                <option value="valid" {{ ($filters['status'] ?? '') == 'valid' ? 'selected' : '' }}>Tervalidasi</option>
+                                <option value="revisi" {{ ($filters['status'] ?? '') == 'revisi' ? 'selected' : '' }}>Perlu Revisi</option>
+                            </select>
                         </div>
+
+                        {{-- 3. TANGGAL (Mengambil 4 dari 12 bagian - LEBIH LEBAR) --}}
+                        <div class="lg:col-span-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Rentang Tanggal</label>
+                            <div class="flex items-center gap-2">
+                                <input type="date" name="date_from" value="{{ $filters['date_from'] ?? '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Dari" />
+                                <span class="text-gray-400">-</span>
+                                <input type="date" name="date_to" value="{{ $filters['date_to'] ?? '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Sampai" />
+                            </div>
+                        </div>
+
+                        {{-- 4. TOMBOL (Mengambil 2 dari 12 bagian) --}}
+                        <div class="lg:col-span-2 flex gap-2">
+                            <button type="submit" class="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                                Filter
+                            </button>
+                            <a href="{{ url()->current() }}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors border border-gray-200" title="Reset Filter">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                            </a>
+                        </div>
+
                     </div>
                 </div>
             </form>
@@ -137,12 +153,12 @@
                                         {{-- Dropdown List Files (Fixed Position) --}}
                                         @if(is_array($doc->file))
                                             <div class="relative dropdown-container">
-                                                <button type="button" onclick="toggleDropdown('dropdown-admin-{{ $doc->id }}', this)" 
+                                                <button type="button" onclick="toggleDropdown('dropdown-admin-{{ $doc->id }}', this)"
                                                         class="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                                     {{ count($doc->file) }} Berkas
                                                     <svg class="ml-2 -mr-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
                                                 </button>
-                                                
+
                                                 <div id="dropdown-admin-{{ $doc->id }}" class="dropdown-menu hidden fixed w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-[9999]">
                                                     <div class="py-1">
                                                         @foreach($doc->file as $key => $path)
@@ -170,7 +186,7 @@
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $s['class'] }}">{{ $s['text'] }}</span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button data-modal-toggle="detail-modal-{{ $doc->id }}" 
+                                        <button data-modal-toggle="detail-modal-{{ $doc->id }}"
                                                 class="text-blue-600 hover:text-blue-900 bg-blue-50 px-3 py-1 rounded hover:bg-blue-100 transition-colors flex items-center">
                                             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-.001.03-.002.06-.002.09a.097.097 0 01-.096.095 4.5 4.5 0 01-8.9 0 .097.097 0 01-.096-.095c0-.03.001-.06.002-.09z"></path></svg>
                                             Lihat Detail
@@ -226,7 +242,7 @@
         @foreach ($dokumen as $doc)
             <div id="detail-modal-{{ $doc->id }}" class="dokumen-modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-70 hidden backdrop-blur-sm">
                 <div class="relative w-full max-w-6xl bg-white rounded-xl shadow-2xl flex flex-col h-[90vh]">
-                    
+
                     {{-- Modal Header --}}
                     <div class="flex justify-between items-center p-4 border-b bg-gray-50 rounded-t-xl">
                         <div>
@@ -240,7 +256,7 @@
 
                     {{-- Modal Body: Split Layout --}}
                     <div class="flex-1 overflow-hidden flex flex-col md:flex-row">
-                        
+
                         {{-- KIRI: List File & Info --}}
                         <div class="w-full md:w-1/3 border-r border-gray-200 flex flex-col bg-white overflow-y-auto">
                             <div class="p-4 border-b border-gray-100">
@@ -284,10 +300,10 @@
                                 <div id="loader-{{ $doc->id }}" class="absolute inset-0 flex items-center justify-center bg-gray-100 z-10 hidden">
                                     <svg class="animate-spin h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                                 </div>
-                                
+
                                 {{-- Iframe Preview --}}
                                 <iframe id="preview-frame-{{ $doc->id }}" src="about:blank" class="w-full h-full rounded-lg shadow-sm bg-white border border-gray-200 hidden"></iframe>
-                                
+
                                 {{-- Placeholder State (Initial) --}}
                                 <div id="placeholder-{{ $doc->id }}" class="text-center text-gray-400">
                                     <svg class="w-16 h-16 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
@@ -297,7 +313,7 @@
                                 {{-- Image Preview Tag (Alternative if not PDF) --}}
                                 <img id="preview-img-{{ $doc->id }}" src="" class="max-w-full max-h-full object-contain hidden rounded-lg shadow-sm" />
                             </div>
-                            
+
                             {{-- Action Bar (Download Button) --}}
                             <div class="p-3 bg-white border-t border-gray-200 flex justify-between items-center">
                                 <span id="filename-display-{{ $doc->id }}" class="text-xs text-gray-500 italic">Belum ada file dipilih</span>
@@ -348,7 +364,7 @@
             const rect = btnElement.getBoundingClientRect();
             dropdown.style.position = 'fixed';
             dropdown.style.width = '200px';
-            
+
             const spaceBelow = window.innerHeight - rect.bottom;
             const dropdownHeight = dropdown.offsetHeight || 200;
 
@@ -384,12 +400,12 @@
             iframe.classList.add('hidden');
             img.classList.add('hidden');
             downloadBtn.classList.remove('hidden');
-            
+
             downloadBtn.href = fullUrl;
             filenameDisp.textContent = filePath.split('/').pop();
 
             const ext = filePath.split('.').pop().toLowerCase();
-            
+
             if(['jpg', 'jpeg', 'png'].includes(ext)) {
                 img.src = fullUrl;
                 img.onload = () => {

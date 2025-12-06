@@ -68,68 +68,74 @@
             {{-- FILTER SECTION --}}
             <form method="GET" action="{{ url()->current() }}" id="filter-form">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 fade-in">
-                    <div class="flex flex-col lg:flex-row lg:items-end gap-6">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 flex-1 min-w-0">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Cari</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor"
-                                             viewbox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                                        </svg>
-                                    </div>
-                                    <input type="text" name="search" value="{{ $filters['search'] ?? '' }}"
-                                           placeholder="Nama, Deskripsi, atau User..."
-                                           class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
+
+                    {{--
+                       STRATEGI GRID:
+                       1. Mobile (default): 1 Kolom (Tumpuk ke bawah).
+                       2. Tablet (md): 2 Kolom.
+                       3. Laptop (lg): Tetap 2 Baris (agar tidak sempit).
+                       4. Layar Lebar (xl): Baru menjadi 1 Baris penuh.
+                    --}}
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 items-end">
+
+                        {{-- 1. SEARCH --}}
+                        {{-- MD: Setengah Layar | LG: 7/12 (Baris 1) | XL: 3/12 (Satu Baris) --}}
+                        <div class="md:col-span-1 lg:col-span-7 xl:col-span-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Cari</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                                 </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                                <select name="status"
-                                        class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
-                                    <option value="">Semua Status</option>
-                                    <option
-                                        value="pending" {{ ($filters['status'] ?? '') == 'pending' ? 'selected' : '' }}>
-                                        Menunggu Validasi
-                                    </option>
-                                    <option value="valid" {{ ($filters['status'] ?? '') == 'valid' ? 'selected' : '' }}>
-                                        Tervalidasi
-                                    </option>
-                                    <option
-                                        value="revisi" {{ ($filters['status'] ?? '') == 'revisi' ? 'selected' : '' }}>
-                                        Perlu Revisi
-                                    </option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal</label>
-                                <div class="flex gap-2">
-                                    <input type="date" name="date_from" value="{{ $filters['date_from'] ?? '' }}"
-                                           class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"/>
-                                    <input type="date" name="date_to" value="{{ $filters['date_to'] ?? '' }}"
-                                           class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm"/>
-                                </div>
+                                <input type="text" name="search" value="{{ $filters['search'] ?? '' }}" placeholder="Cari data..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
                             </div>
                         </div>
-                        <div class="flex gap-3 flex-shrink-0">
-                            <a href="{{ url()->current() }}"
-                               class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">Reset</a>
-                            <button type="submit"
-                                    class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">
+
+                        {{-- 2. STATUS --}}
+                        {{-- MD: Setengah Layar | LG: 5/12 (Baris 1 - Sisa) | XL: 2/12 --}}
+                        <div class="md:col-span-1 lg:col-span-5 xl:col-span-2">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                            <select name="status" class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                <option value="">Semua</option>
+                                <option value="pending" {{ ($filters['status'] ?? '') == 'pending' ? 'selected' : '' }}>Menunggu</option>
+                                <option value="valid" {{ ($filters['status'] ?? '') == 'valid' ? 'selected' : '' }}>Valid</option>
+                                <option value="revisi" {{ ($filters['status'] ?? '') == 'revisi' ? 'selected' : '' }}>Revisi</option>
+                            </select>
+                        </div>
+
+                        {{-- 3. TANGGAL --}}
+                        {{-- MD: Full Width | LG: 7/12 (Baris 2) | XL: 4/12 --}}
+                        <div class="md:col-span-2 lg:col-span-7 xl:col-span-4">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Rentang Tanggal</label>
+                            <div class="flex items-center gap-2">
+                                <input type="date" name="date_from" value="{{ $filters['date_from'] ?? '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500" />
+                                <span class="text-gray-400">-</span>
+                                <input type="date" name="date_to" value="{{ $filters['date_to'] ?? '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500" />
+                            </div>
+                        </div>
+
+                        {{-- 4. TOMBOL ACTION --}}
+                        {{-- MD: Full Width | LG: 5/12 (Baris 2 - Sisa) | XL: 3/12 --}}
+                        <div class="md:col-span-2 lg:col-span-5 xl:col-span-3 flex gap-2">
+                            {{-- Tombol Filter --}}
+                            <button type="submit" class="flex-1 px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-sm flex items-center justify-center whitespace-nowrap">
+                                <svg class="w-4 h-4 mr-1 hidden xl:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
                                 Filter
                             </button>
-                            <a href="{{ route('operator.dokumen_masuk.export', request()->query()) }}"
-                               target="_blank"
-                               class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors flex items-center">
-                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                          d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+
+                            {{-- Tombol Export --}}
+                            <a href="{{ route('operator.dokumen_masuk.export', request()->query()) }}" target="_blank" class="flex-1 px-3 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors shadow-sm flex items-center justify-center text-center whitespace-nowrap">
+                                <svg class="w-4 h-4 mr-1 hidden xl:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                Excel
+                            </a>
+
+                            {{-- Tombol Reset --}}
+                            <a href="{{ url()->current() }}" class="px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors border border-gray-200 flex-none" title="Reset Filter">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                 </svg>
-                                Export Excel
                             </a>
                         </div>
+
                     </div>
                 </div>
             </form>

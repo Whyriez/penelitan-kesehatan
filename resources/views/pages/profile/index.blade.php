@@ -113,7 +113,7 @@
                             </div>
 
                             <div>
-                                <label for="role" class="block text-sm font-medium text-gray-700 mb-2">Jabatan</label>
+                                <label for="role" class="block text-sm font-medium text-gray-700 mb-2">Role</label>
                                 <input type="text" id="role" name="role" value="{{ ucfirst($user->role) }}" readonly
                                        class="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-50 text-sm text-gray-600"/>
                             </div>

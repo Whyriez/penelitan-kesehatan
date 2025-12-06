@@ -99,7 +99,7 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-                                    {{ $doc->tgl_upload ? \Carbon\Carbon::parse($doc->tgl_upload)->translatedFormat('d M Y') : 'Draft' }}
+                                    {{ $doc->tgl_surat ? \Carbon\Carbon::parse($doc->tgl_upload)->translatedFormat('d M Y') : 'Draft' }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if (is_array($doc->file) && count($doc->file) > 0)

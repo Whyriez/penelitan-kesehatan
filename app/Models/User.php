@@ -30,6 +30,28 @@ class User extends Authenticatable
         'role',
     ];
 
+
+    public function getIsProfileCompleteAttribute(): bool
+    {
+        // Daftar kolom yang WAJIB diisi sebelum bisa lanjut
+        $requiredFields = [
+            'nomor_identitas',
+            'gelar_jabatan',
+            'department',
+            'alamat',
+            'institusi',
+            'nomor_telepon'
+        ];
+
+        foreach ($requiredFields as $field) {
+            if (empty($this->$field)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
