@@ -1,5 +1,5 @@
 @extends('layouts.layout')
-@section('title', 'Riwayat Dokumen')
+@section('title', 'Izin Kesehatan - Riwayat Dokumen')
 
 @section('content')
     <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-x-auto min-h-screen pb-20">
