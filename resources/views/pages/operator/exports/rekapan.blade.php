@@ -25,7 +25,7 @@
     </tr>
 
     <tr>
-        <th colspan="10" style="text-align: center; font-family: Arial; font-size: 12px; font-weight: bold;">
+        <th colspan="10" style="text-align: center; faont-family: Arial; font-size: 12px; font-weight: bold;">
             REKAPITULASI PENGAJUAN DOKUMEN IZIN KESEHATAN
         </th>
     </tr>

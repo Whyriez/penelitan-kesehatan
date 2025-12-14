@@ -55,52 +55,100 @@
 
             {{-- FILTER SECTION --}}
             <form method="GET" action="{{ url()->current() }}" id="filter-form">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 fade-in">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 fade-in">
 
-                    {{-- Menggunakan Grid 12 Kolom untuk kontrol yang lebih presisi --}}
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 items-end">
+                    {{-- Container dengan gap yang konsisten --}}
+                    <div class="space-y-4">
 
-                        {{-- 1. SEARCH (Mengambil 3 dari 12 bagian) --}}
-                        <div class="lg:col-span-3">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Cari</label>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        {{-- Baris 1: Search dan Status --}}
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                            {{-- 1. SEARCH --}}
+                            <div class="w-full">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Cari</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        name="search"
+                                        value="{{ $filters['search'] ?? '' }}"
+                                        placeholder="Nama / Deskripsi..."
+                                        class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                    />
                                 </div>
-                                <input type="text" name="search" value="{{ $filters['search'] ?? '' }}" placeholder="Nama / Deskripsi..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+                            </div>
+
+                            {{-- 2. STATUS --}}
+                            <div class="w-full">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                                <select
+                                    name="status"
+                                    class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                >
+                                    <option value="">Semua Status</option>
+                                    <option value="pending" {{ ($filters['status'] ?? '') == 'pending' ? 'selected' : '' }}>Menunggu Validasi</option>
+                                    <option value="valid" {{ ($filters['status'] ?? '') == 'valid' ? 'selected' : '' }}>Tervalidasi</option>
+                                    <option value="revisi" {{ ($filters['status'] ?? '') == 'revisi' ? 'selected' : '' }}>Perlu Revisi</option>
+                                </select>
                             </div>
                         </div>
 
-                        {{-- 2. STATUS (Mengambil 3 dari 12 bagian) --}}
-                        <div class="lg:col-span-3">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                            <select name="status" class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
-                                <option value="">Semua Status</option>
-                                <option value="pending" {{ ($filters['status'] ?? '') == 'pending' ? 'selected' : '' }}>Menunggu Validasi</option>
-                                <option value="valid" {{ ($filters['status'] ?? '') == 'valid' ? 'selected' : '' }}>Tervalidasi</option>
-                                <option value="revisi" {{ ($filters['status'] ?? '') == 'revisi' ? 'selected' : '' }}>Perlu Revisi</option>
-                            </select>
-                        </div>
-
-                        {{-- 3. TANGGAL (Mengambil 4 dari 12 bagian - LEBIH LEBAR) --}}
-                        <div class="lg:col-span-4">
+                        {{-- Baris 2: Rentang Tanggal --}}
+                        <div class="w-full">
                             <label class="block text-sm font-medium text-gray-700 mb-2">Rentang Tanggal</label>
-                            <div class="flex items-center gap-2">
-                                <input type="date" name="date_from" value="{{ $filters['date_from'] ?? '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Dari" />
-                                <span class="text-gray-400">-</span>
-                                <input type="date" name="date_to" value="{{ $filters['date_to'] ?? '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500" placeholder="Sampai" />
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                <div class="relative">
+                                    <input
+                                        type="date"
+                                        name="date_from"
+                                        value="{{ $filters['date_from'] ?? '' }}"
+                                        class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Dari"
+                                    />
+                                    <span class="absolute left-3 top-2 text-xs text-gray-400 pointer-events-none sm:hidden">Dari</span>
+                                </div>
+                                <div class="relative">
+                                    <input
+                                        type="date"
+                                        name="date_to"
+                                        value="{{ $filters['date_to'] ?? '' }}"
+                                        class="block w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                        placeholder="Sampai"
+                                    />
+                                    <span class="absolute left-3 top-2 text-xs text-gray-400 pointer-events-none sm:hidden">Sampai</span>
+                                </div>
                             </div>
                         </div>
 
-                        {{-- 4. TOMBOL (Mengambil 2 dari 12 bagian) --}}
-                        <div class="lg:col-span-2 flex gap-2">
-                            <button type="submit" class="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
-                                Filter
+                        {{-- Baris 3: Tombol Aksi --}}
+                        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                            <button
+                                type="submit"
+                                class="flex-1 sm:flex-none sm:min-w-[120px] px-6 py-2.5 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow"
+                            >
+                    <span class="flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                        </svg>
+                        Terapkan Filter
+                    </span>
                             </button>
-                            <a href="{{ url()->current() }}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors border border-gray-200" title="Reset Filter">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                                </svg>
+
+                            <a
+                                href="{{ url()->current() }}"
+                                class="flex-1 sm:flex-none sm:min-w-[120px] px-6 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 shadow-sm hover:shadow"
+                                title="Reset Filter"
+                            >
+                    <span class="flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Reset
+                    </span>
                             </a>
                         </div>
 

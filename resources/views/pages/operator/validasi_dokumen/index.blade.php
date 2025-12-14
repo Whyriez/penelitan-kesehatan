@@ -43,30 +43,53 @@
             {{-- FILTER FORM --}}
             <form method="GET" action="{{ url()->current() }}" id="filter-form">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-                    <div class="flex flex-col lg:flex-row lg:items-end gap-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
+
+                    {{-- Wrapper Utama --}}
+                    <div class="flex flex-col xl:flex-row xl:items-end gap-6">
+
+                        {{--
+                            PERBAIKAN DISINI:
+                            Ubah 'md:grid-cols-2' jadi 'lg:grid-cols-2'.
+
+                            Efeknya:
+                            - Di 800px (Tablet), Search & Tanggal akan tumpuk atas-bawah (Full Width).
+                              Ini mencegah input tanggal terpotong/keluar card.
+                            - Di Laptop (LG/XL), mereka kembali sejajar kiri-kanan.
+                        --}}
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1">
+
+                            {{-- 1. Cari --}}
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Cari</label>
                                 <input type="text" name="search" value="{{ $filters['search'] ?? '' }}"
                                        placeholder="Nama, Deskripsi, User..."
                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                             </div>
+
+                            {{-- 2. Tanggal --}}
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Tanggal</label>
                                 <div class="flex gap-2">
                                     <input type="date" name="date_from" value="{{ $filters['date_from'] ?? '' }}"
-                                           class="flex-1 px-3 py-2 border border-gray-300 rounded-lg">
+                                           class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                     <input type="date" name="date_to" value="{{ $filters['date_to'] ?? '' }}"
-                                           class="flex-1 px-3 py-2 border border-gray-300 rounded-lg">
+                                           class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                 </div>
                             </div>
                         </div>
-                        <div class="flex gap-3">
+
+                        {{-- Tombol --}}
+                        <div class="flex gap-3 shrink-0">
                             <a href="{{ url()->current() }}"
-                               class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">Reset</a>
+                               class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 text-center whitespace-nowrap">
+                                Reset
+                            </a>
                             <button type="submit"
-                                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Filter</button>
+                                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 whitespace-nowrap">
+                                Filter
+                            </button>
                         </div>
+
                     </div>
                 </div>
             </form>

@@ -65,73 +65,101 @@
                 </div>
             </div>
 
-            {{-- FILTER SECTION --}}
             <form method="GET" action="{{ url()->current() }}" id="filter-form">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 fade-in">
 
                     {{--
-                       STRATEGI GRID:
-                       1. Mobile (default): 1 Kolom (Tumpuk ke bawah).
-                       2. Tablet (md): 2 Kolom.
-                       3. Laptop (lg): Tetap 2 Baris (agar tidak sempit).
-                       4. Layar Lebar (xl): Baru menjadi 1 Baris penuh.
+                       PERBAIKAN GRID:
+                       1. Mobile: 1 Kolom.
+                       2. MD s/d XL (Tablet & Laptop 1282px): 2 Baris (Grid 12 Kolom).
+                          - Baris 1: Search (8) + Status (4)
+                          - Baris 2: Tanggal (7) + Tombol (5)
+                       3. 2XL (Layar Super Lebar): 1 Baris Penuh.
                     --}}
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 items-end">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
 
                         {{-- 1. SEARCH --}}
-                        {{-- MD: Setengah Layar | LG: 7/12 (Baris 1) | XL: 3/12 (Satu Baris) --}}
-                        <div class="md:col-span-1 lg:col-span-7 xl:col-span-3">
+                        {{-- MD-XL: Lebar 8/12 | 2XL: Lebar 3/12 --}}
+                        <div class="md:col-span-8 xl:col-span-8 2xl:col-span-3">
                             <label class="block text-sm font-medium text-gray-700 mb-2">Cari</label>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor"
+                                         viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
                                 </div>
-                                <input type="text" name="search" value="{{ $filters['search'] ?? '' }}" placeholder="Cari data..." class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+                                <input type="text" name="search" value="{{ $filters['search'] ?? '' }}"
+                                       placeholder="Cari data..."
+                                       class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"/>
                             </div>
                         </div>
 
                         {{-- 2. STATUS --}}
-                        {{-- MD: Setengah Layar | LG: 5/12 (Baris 1 - Sisa) | XL: 2/12 --}}
-                        <div class="md:col-span-1 lg:col-span-5 xl:col-span-2">
+                        {{-- MD-XL: Lebar 4/12 (Sisa Baris 1) | 2XL: Lebar 2/12 --}}
+                        <div class="md:col-span-4 xl:col-span-4 2xl:col-span-2">
                             <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                            <select name="status" class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            <select name="status"
+                                    class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                                 <option value="">Semua</option>
-                                <option value="pending" {{ ($filters['status'] ?? '') == 'pending' ? 'selected' : '' }}>Menunggu</option>
-                                <option value="valid" {{ ($filters['status'] ?? '') == 'valid' ? 'selected' : '' }}>Valid</option>
-                                <option value="revisi" {{ ($filters['status'] ?? '') == 'revisi' ? 'selected' : '' }}>Revisi</option>
+                                <option value="pending" {{ ($filters['status'] ?? '') == 'pending' ? 'selected' : '' }}>
+                                    Menunggu
+                                </option>
+                                <option value="valid" {{ ($filters['status'] ?? '') == 'valid' ? 'selected' : '' }}>
+                                    Valid
+                                </option>
+                                <option value="revisi" {{ ($filters['status'] ?? '') == 'revisi' ? 'selected' : '' }}>
+                                    Revisi
+                                </option>
                             </select>
                         </div>
 
                         {{-- 3. TANGGAL --}}
-                        {{-- MD: Full Width | LG: 7/12 (Baris 2) | XL: 4/12 --}}
-                        <div class="md:col-span-2 lg:col-span-7 xl:col-span-4">
+                        {{-- MD-XL: Lebar 7/12 (Baris 2) | 2XL: Lebar 4/12 --}}
+                        <div class="md:col-span-7 xl:col-span-7 2xl:col-span-4">
                             <label class="block text-sm font-medium text-gray-700 mb-2">Rentang Tanggal</label>
                             <div class="flex items-center gap-2">
-                                <input type="date" name="date_from" value="{{ $filters['date_from'] ?? '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500" />
+                                <input type="date" name="date_from" value="{{ $filters['date_from'] ?? '' }}"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500"/>
                                 <span class="text-gray-400">-</span>
-                                <input type="date" name="date_to" value="{{ $filters['date_to'] ?? '' }}" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500" />
+                                <input type="date" name="date_to" value="{{ $filters['date_to'] ?? '' }}"
+                                       class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500"/>
                             </div>
                         </div>
 
                         {{-- 4. TOMBOL ACTION --}}
-                        {{-- MD: Full Width | LG: 5/12 (Baris 2 - Sisa) | XL: 3/12 --}}
-                        <div class="md:col-span-2 lg:col-span-5 xl:col-span-3 flex gap-2">
+                        {{-- MD-XL: Lebar 5/12 (Sisa Baris 2) | 2XL: Lebar 3/12 --}}
+                        <div class="md:col-span-5 xl:col-span-5 2xl:col-span-3 flex gap-2">
                             {{-- Tombol Filter --}}
-                            <button type="submit" class="flex-1 px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-sm flex items-center justify-center whitespace-nowrap">
-                                <svg class="w-4 h-4 mr-1 hidden xl:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
+                            <button type="submit"
+                                    class="flex-1 px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-sm flex items-center justify-center whitespace-nowrap">
+                                {{-- Icon selalu muncul sekarang agar tombol tidak terlalu pendek --}}
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+                                </svg>
                                 Filter
                             </button>
 
                             {{-- Tombol Export --}}
-                            <a href="{{ route('operator.dokumen_masuk.export', request()->query()) }}" target="_blank" class="flex-1 px-3 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors shadow-sm flex items-center justify-center text-center whitespace-nowrap">
-                                <svg class="w-4 h-4 mr-1 hidden xl:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            <a href="{{ route('operator.dokumen_masuk.export', request()->query()) }}" target="_blank"
+                               class="flex-1 px-3 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors shadow-sm flex items-center justify-center text-center whitespace-nowrap">
+                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
                                 Excel
                             </a>
 
                             {{-- Tombol Reset --}}
-                            <a href="{{ url()->current() }}" class="px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors border border-gray-200 flex-none" title="Reset Filter">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                            <a href="{{ url()->current() }}"
+                               class="px-3 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors border border-gray-200 flex-none flex items-center justify-center"
+                               title="Reset Filter">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                                 </svg>
                             </a>
                         </div>
@@ -255,16 +283,46 @@
                                         class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $s['class'] }}">{{ $s['text'] }}</span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <button data-modal-toggle="detail-modal-{{ $doc->id }}"
-                                            class="text-blue-600 hover:text-blue-900 bg-blue-50 px-3 py-1 rounded hover:bg-blue-100 transition-colors flex items-center">
-                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-.001.03-.002.06-.002.09a.097.097 0 01-.096.095 4.5 4.5 0 01-8.9 0 .097.097 0 01-.096-.095c0-.03.001-.06.002-.09z"></path>
-                                        </svg>
-                                        Lihat Detail
-                                    </button>
+                                    <div class="flex flex-col gap-2">
+                                        {{-- Tombol Lihat Detail (Selalu Ada) --}}
+                                        <button data-modal-toggle="detail-modal-{{ $doc->id }}"
+                                                class="text-blue-600 hover:text-blue-900 bg-blue-50 px-3 py-1 rounded hover:bg-blue-100 transition-colors flex items-center justify-center">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor"
+                                                 viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-.001.03-.002.06-.002.09a.097.097 0 01-.096.095 4.5 4.5 0 01-8.9 0 .097.097 0 01-.096-.095c0-.03.001-.06.002-.09z"></path>
+                                            </svg>
+                                            Detail
+                                        </button>
+
+                                        {{-- LOGIKA BARU: Tombol Upload SIP (Hanya jika Valid) --}}
+                                        @if($doc->status == 'valid')
+                                            @if($doc->file_surat_izin)
+                                                {{-- JIKA SUDAH ADA FILE: TAMPILAN UPDATE (Kuning/Amber) --}}
+                                                <button data-modal-toggle="upload-sip-modal-{{ $doc->id }}"
+                                                        class="w-full text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-3 py-1.5 rounded transition-colors flex items-center justify-center shadow-sm text-xs font-semibold group"
+                                                        title="SIP sudah terbit. Klik untuk mengganti file.">
+                                                    {{-- Icon Refresh/Update --}}
+                                                    <svg class="w-3.5 h-3.5 mr-1.5 text-amber-600 group-hover:text-amber-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                                    </svg>
+                                                    Update SIP
+                                                </button>
+                                            @else
+                                                {{-- JIKA BELUM ADA FILE: TAMPILAN UPLOAD BARU (Hijau Menyala) --}}
+                                                <button data-modal-toggle="upload-sip-modal-{{ $doc->id }}"
+                                                        class="w-full text-white bg-green-600 hover:bg-green-700 border border-transparent px-3 py-1.5 rounded transition-colors flex items-center justify-center shadow-sm text-xs font-medium animate-pulse hover:animate-none">
+                                                    {{-- Icon Upload --}}
+                                                    <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                                    </svg>
+                                                    Terbitkan SIP
+                                                </button>
+                                            @endif
+                                        @endif
+                                    </div>
                                 </td>
                             </tr>
                         @empty
@@ -300,6 +358,28 @@
                                             class="w-full bg-blue-600 text-white py-2 rounded-lg text-sm font-medium">
                                         Lihat Detail
                                     </button>
+
+                                    @if($doc->status == 'valid')
+                                        @if($doc->file_surat_izin)
+                                            {{-- Tombol UPDATE Mobile --}}
+                                            <button data-modal-toggle="upload-sip-modal-{{ $doc->id }}"
+                                                    class="w-full bg-amber-100 text-amber-800 border border-amber-200 py-2 rounded-lg text-sm font-bold flex justify-center items-center hover:bg-amber-200 transition-colors">
+                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                                </svg>
+                                                Update File SIP
+                                            </button>
+                                        @else
+                                            {{-- Tombol UPLOAD BARU Mobile --}}
+                                            <button data-modal-toggle="upload-sip-modal-{{ $doc->id }}"
+                                                    class="w-full bg-green-600 text-white border border-green-600 py-2 rounded-lg text-sm font-bold flex justify-center items-center shadow-md hover:bg-green-700 transition-colors">
+                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                                                </svg>
+                                                Terbitkan SIP Sekarang
+                                            </button>
+                                        @endif
+                                    @endif
                                 </div>
                             </div>
                         @endforeach
@@ -440,8 +520,118 @@
 
                 </div>
             </div>
+
+            {{-- MODAL UPLOAD SIP --}}
+            <div id="upload-sip-modal-{{ $doc->id }}"
+                 class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black bg-opacity-70 hidden backdrop-blur-sm">
+                <div class="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden transform transition-all">
+
+                    {{-- HEADER: Berubah Judul Tergantung Kondisi --}}
+                    <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center {{ $doc->file_surat_izin ? 'bg-amber-50' : 'bg-blue-50' }}">
+                        <h3 class="text-lg font-bold {{ $doc->file_surat_izin ? 'text-amber-800' : 'text-blue-800' }}">
+                            {{-- LOGIKA JUDUL --}}
+                            {{ $doc->file_surat_izin ? 'Update / Ganti SIP' : 'Terbitkan SIP Baru' }}
+                        </h3>
+                        <button data-modal-close="upload-sip-modal-{{ $doc->id }}"
+                                class="text-gray-400 hover:text-red-500 transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    {{-- FORM --}}
+                    <form action="{{ route('operator.dokumen.upload_sip', $doc->id) }}" method="POST"
+                          enctype="multipart/form-data">
+                        @csrf
+                        <div class="p-6">
+
+                            {{-- ALERT STATUS FILE SAAT INI --}}
+                            @if($doc->file_surat_izin)
+                                <div class="mb-4 bg-amber-50 border border-amber-200 text-amber-800 p-3 rounded-lg text-xs flex items-start">
+                                    <svg class="w-5 h-5 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>
+                                    <div>
+                                        <span class="font-bold block mb-1">Dokumen SIP Sudah Ada!</span>
+                                        Mengupload file baru akan <span class="underline">menghapus dan mengganti</span> file SIP lama yang sudah terbit.
+                                    </div>
+                                </div>
+                            @else
+                                <div class="mb-4 bg-blue-50 border border-blue-200 text-blue-800 p-3 rounded-lg text-xs flex items-center">
+                                    <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    Silakan upload file PDF SIP yang telah ditandatangani.
+                                </div>
+                            @endif
+
+                            <div class="mb-2">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    {{ $doc->file_surat_izin ? 'Pilih File Pengganti (PDF)' : 'Upload File SIP (PDF)' }}
+                                </label>
+                                <div class="flex items-center justify-center w-full">
+                                    <label for="file-upload-{{ $doc->id }}" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-colors">
+
+                                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                            <svg class="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                                            </svg>
+
+                                            {{-- ID DISPLAY FILE --}}
+                                            <p id="upload-filename-display-{{ $doc->id }}" class="text-sm text-gray-500 text-center px-2">
+                                                <span class="font-semibold">Klik untuk pilih file</span>
+                                            </p>
+                                            <p class="text-xs text-gray-500 mt-1">PDF (Max. 2MB)</p>
+                                        </div>
+
+                                        <input id="file-upload-{{ $doc->id }}"
+                                               type="file"
+                                               name="file_surat_izin"
+                                               class="hidden"
+                                               accept=".pdf"
+                                               required
+                                               onchange="updateFileName(this, '{{ $doc->id }}')" />
+                                    </label>
+                                </div>
+                                {{-- Error Message --}}
+                                @error('file_surat_izin')
+                                <p class="mt-2 text-sm text-red-600 flex items-center">
+                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    {{ $message }}
+                                </p>
+                                @enderror
+                            </div>
+                        </div>
+
+                        {{-- FOOTER TOMBOL --}}
+                        <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
+                            <button type="button" data-modal-close="upload-sip-modal-{{ $doc->id }}"
+                                    class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 font-medium text-sm">
+                                Batal
+                            </button>
+
+                            {{-- LOGIKA TOMBOL & WARNA --}}
+                            @if($doc->file_surat_izin)
+                                {{-- Tombol UPDATE (Warna Amber/Kuning Gelap) --}}
+                                <button type="submit"
+                                        class="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 font-medium text-sm shadow-sm flex items-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                                    Simpan Perubahan
+                                </button>
+                            @else
+                                {{-- Tombol UPLOAD BARU (Warna Biru) --}}
+                                <button type="submit"
+                                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium text-sm shadow-sm flex items-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    Terbitkan Sekarang
+                                </button>
+                            @endif
+                        </div>
+                    </form>
+                </div>
+            </div>
         @endforeach
     </div>
+
+
 
     <style>
         .fade-in {
@@ -503,6 +693,37 @@
             } else {
                 dropdown.style.top = (rect.bottom + 5) + 'px';
                 dropdown.style.left = (rect.left - 50) + 'px';
+            }
+        }
+
+        function updateFileName(input, id) {
+            const displayElement = document.getElementById('upload-filename-display-' + id);
+
+            if (input.files && input.files.length > 0) {
+                const fileName = input.files[0].name;
+
+                // Update tampilan
+                displayElement.innerHTML = `
+            <span class="text-green-600 font-bold flex flex-col items-center justify-center gap-1 animate-pulse">
+                <span class="flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    File Terpilih:
+                </span>
+                <span class="text-sm text-gray-700">${fileName}</span>
+            </span>
+        `;
+
+                // Opsional: Ubah border jadi hijau agar lebih jelas
+                input.parentElement.classList.remove('border-gray-300', 'bg-gray-50');
+                input.parentElement.classList.add('border-green-500', 'bg-green-50');
+
+            } else {
+                // Reset tampilan
+                displayElement.innerHTML = '<span class="font-semibold">Klik untuk upload</span> atau drag and drop';
+
+                // Reset border
+                input.parentElement.classList.add('border-gray-300', 'bg-gray-50');
+                input.parentElement.classList.remove('border-green-500', 'bg-green-50');
             }
         }
 

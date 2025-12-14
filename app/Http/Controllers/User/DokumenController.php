@@ -16,9 +16,9 @@ class DokumenController extends Controller
         'surat_permohonan' => 'Surat Permohonan',
         'str' => 'STR (Surat Tanda Registrasi)',
         'ktp' => 'Foto Copy KTP',
-        'bukti_skp' => 'Bukti Kecukupan SKP',
         'pernyataan_praktek' => 'Surat Pernyataan Tempat Praktek',
-        'pernyataan_skp' => 'Surat Pernyataan Kecukupan SKP'
+        'bukti_skp' => 'Bukti Kecukupan SKP (Satuan Kredit Profesi)',
+        'pernyataan_skp' => 'Surat Pernyataan Kecukupan SKP (Satuan Kredit Profesi)'
     ];
 
     public function indexUpload()
@@ -45,7 +45,7 @@ class DokumenController extends Controller
             $rules['tempat_praktek'] = 'required|string|max:255';
             $rules['tanggal-surat'] = 'required|date';
             $rules['deskripsi']     = 'required|string';
-            $rules['dokumen']       = 'required|array';
+            $rules['dokumen']       = 'nullable|array';
 
             $rules['dokumen.*']     = 'required|file|mimes:pdf,jpg,jpeg,png|max:512000';
         }
@@ -66,11 +66,11 @@ class DokumenController extends Controller
                 }
             }
 
-            // Cek Manual Kelengkapan jika SUBMIT (Bukan Draft)
-            // Karena 'pernyataan_skp' sekarang optional, kita pastikan file WAJIB lainnya ada
             if (!$isDraft) {
                 foreach ($this->syaratDokumen as $key => $label) {
-                    if ($key === 'pernyataan_skp') continue; // Skip yang optional
+
+                    // PERUBAHAN DISINI: Skip pernyataan_skp DAN bukti_skp
+                    if (in_array($key, ['pernyataan_skp', 'bukti_skp'])) continue;
 
                     if (!isset($filePaths[$key])) {
                         return back()->withInput()->withErrors(['dokumen.' . $key => "Dokumen $label wajib diunggah."]);

@@ -101,8 +101,8 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             @foreach($syarat as $key => $label)
                                 @php
-                                    // Cek apakah ini file optional
-                                    $isOptional = ($key === 'pernyataan_skp');
+                                    // Cek apakah ini file optional (pernyataan_skp ATAU bukti_skp)
+                                    $isOptional = in_array($key, ['pernyataan_skp', 'bukti_skp']);
                                 @endphp
                                 <div
                                     class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-blue-300 transition-colors {{ $errors->has('dokumen.'.$key) ? 'border-red-300 bg-red-50' : '' }}">
@@ -167,4 +167,63 @@
             </div>
         </div>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Ambil semua elemen input file di halaman ini
+            const fileInputs = document.querySelectorAll('input[type="file"]');
+
+            // Batas ukuran 500MB dalam bytes
+            // 500 * 1024 * 1024 = 524,288,000 bytes
+            const MAX_SIZE = 500 * 1024 * 1024;
+
+            fileInputs.forEach(input => {
+                input.addEventListener('change', function () {
+                    // Cek apakah ada file yang dipilih
+                    if (this.files && this.files.length > 0) {
+                        const file = this.files[0];
+                        const fileSize = file.size;
+                        const fileType = file.type;
+
+                        // Validasi 1: Ukuran File (Max 500MB)
+                        if (fileSize > MAX_SIZE) {
+                            // Reset input agar file tidak jadi ter-upload
+                            this.value = '';
+
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'File Terlalu Besar!',
+                                text: 'Ukuran file maksimal adalah 500MB. File Anda berukuran ' + (fileSize / (1024 * 1024)).toFixed(2) + 'MB.',
+                                confirmButtonColor: '#2563EB', // Sesuai warna biru tema
+                                confirmButtonText: 'Mengerti'
+                            });
+                            return;
+                        }
+
+                        // Validasi 2: Tipe File (PDF, JPG, JPEG, PNG)
+                        // Browser modern biasanya sudah memfilter lewat atribut accept="",
+                        // tapi ini double check jika user memaksa 'All Files'
+                        const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
+
+                        // Note: Kadang MIME type bisa berbeda tergantung OS, jadi kita cek ekstensi juga sebagai cadangan
+                        const fileName = file.name.toLowerCase();
+                        const isValidExtension = fileName.endsWith('.pdf') || fileName.endsWith('.jpg') || fileName.endsWith('.jpeg') || fileName.endsWith('.png');
+
+                        if (!allowedTypes.includes(fileType) && !isValidExtension) {
+                            this.value = ''; // Reset input
+
+                            Swal.fire({
+                                icon: 'warning',
+                                title: 'Format Tidak Sesuai',
+                                text: 'Harap unggah file dengan format PDF, JPG, atau PNG.',
+                                confirmButtonColor: '#2563EB',
+                                confirmButtonText: 'Oke'
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

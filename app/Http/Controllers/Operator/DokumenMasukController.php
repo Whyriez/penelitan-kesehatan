@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ArsipPenelitianKesehatan;
 use Illuminate\Http\Request;
 use App\Exports\DokumenMasukExport;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DokumenMasukController extends Controller
@@ -72,5 +73,35 @@ class DokumenMasukController extends Controller
 
         $timestamp = date('d-m-Y_H-i');
         return Excel::download(new DokumenMasukExport($filters), "Rekapan_Izin_$timestamp.xlsx");
+    }
+
+    public function uploadSip(Request $request, ArsipPenelitianKesehatan $arsip)
+    {
+        // Validasi input
+        $request->validate([
+            'file_surat_izin' => 'required|mimes:pdf|max:512000', // Wajib PDF, max 500MB
+        ], [
+            'file_surat_izin.required' => 'File Surat Izin wajib diupload.',
+            'file_surat_izin.mimes' => 'Format file harus PDF.',
+            'file_surat_izin.max' => 'Ukuran file maksimal 500MB.',
+        ]);
+
+        // Simpan File
+        if ($request->hasFile('file_surat_izin')) {
+            // Hapus file lama jika ada (untuk replace)
+            if ($arsip->file_surat_izin) {
+                Storage::delete('public/' . $arsip->file_surat_izin);
+            }
+
+            // Simpan file baru ke folder 'surat_izin' di storage public
+            $path = $request->file('file_surat_izin')->store('surat_izin', 'public');
+
+            // Update database
+            $arsip->update([
+                'file_surat_izin' => $path
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Surat Izin Praktik (SIP) berhasil diterbitkan dan diupload.');
     }
 }

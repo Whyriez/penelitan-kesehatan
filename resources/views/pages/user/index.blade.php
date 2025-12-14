@@ -4,19 +4,19 @@
 @section('content')
     <main class="flex-1 p-4 sm:p-6 lg:p-8 overflow-x-auto">
         <div class="max-w-7xl mx-auto space-y-8">
-            <div class="bg-gradient-to-r from-sky-500 to-blue-600 rounded-xl shadow-lg p-4 sm:p-6 text-white fade-in">
+            <div class="bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl shadow-lg p-4 sm:p-6 text-white fade-in">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                     <div class="mb-4 md:mb-0">
                         <h2 class="text-xl sm:text-2xl font-bold mb-2">Selamat Datang di Sistem Izin Kesehatan DPMPTSP Bone Bolango!
                         </h2>
-                        <p class="text-sky-100 text-sm sm:text-base">Pantau status dokumen Anda secara real-time di dashboard ini.</p>
+                        <p class="text-green-100 text-sm sm:text-base">Pantau status dokumen Anda secara real-time di dashboard ini.</p>
                     </div>
                     <div>
                         <a href="{{ route('user.upload') }}"
-                            class="inline-flex items-center px-4 py-2 bg-white text-sky-600 font-medium rounded-lg hover:bg-sky-50 transition-colors text-sm sm:text-base">
+                           class="inline-flex items-center px-4 py-2 bg-white text-green-600 font-medium rounded-lg hover:bg-green-50 transition-colors text-sm sm:text-base">
                             <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
                             Upload Dokumen Baru
                         </a>

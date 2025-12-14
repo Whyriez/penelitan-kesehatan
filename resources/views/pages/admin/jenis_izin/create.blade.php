@@ -41,8 +41,8 @@
                         <select id="kategori" name="kategori" required
                                 class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
                             <option value="">Pilih Kategori</option>
-                            <option value="Penelitian" {{ old('kategori') == 'Penelitian' ? 'selected' : '' }}>Penelitian</option>
-                            <option value="Praktik Nakes" {{ old('kategori') == 'Praktik Nakes' ? 'selected' : '' }}>Praktik Nakes</option>
+                            <option value="Izin Kerja" {{ old('kategori') == 'Izin Kerja' ? 'selected' : '' }}>Izin Kerja</option>
+                            <option value="Izin Praktek" {{ old('kategori') == 'Izin Praktek' ? 'selected' : '' }}>Izin Praktek</option>
                         </select>
                     </div>
 

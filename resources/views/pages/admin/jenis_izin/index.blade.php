@@ -12,14 +12,16 @@
                 <a href="{{ route('admin.jenis_izin.create') }}"
                    class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                     </svg>
                     Tambah Jenis Izin
                 </a>
             </div>
 
             @if (session('success'))
-                <div class="bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded-lg relative" role="alert">
+                <div class="bg-green-100 border border-green-300 text-green-800 px-4 py-3 rounded-lg relative"
+                     role="alert">
                     <span class="block sm:inline">{{ session('success') }}</span>
                 </div>
             @endif
@@ -36,20 +38,28 @@
                             <label for="search" class="block text-sm font-medium text-gray-700 mb-2">Cari Izin</label>
                             <input type="text" id="search" name="search" placeholder="Nama izin..."
                                    value="{{ $filters['search'] ?? '' }}"
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base" />
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base"/>
                         </div>
                         <div>
-                            <label for="kategori-filter" class="block text-sm font-medium text-gray-700 mb-2">Filter Kategori</label>
+                            <label for="kategori-filter" class="block text-sm font-medium text-gray-700 mb-2">Filter
+                                Kategori</label>
                             <select id="kategori-filter" name="kategori"
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base">
                                 <option value="">Semua Kategori</option>
-                                <option value="Penelitian" {{ ($filters['kategori'] ?? '') == 'Penelitian' ? 'selected' : '' }}>Penelitian</option>
-                                <option value="Praktik Nakes" {{ ($filters['kategori'] ?? '') == 'Praktik Nakes' ? 'selected' : '' }}>Praktik Nakes</option>
+                                <option
+                                    value="Izin Kerja" {{ ($filters['kategori'] ?? '') == 'Izin Kerja' ? 'selected' : '' }}>
+                                    Izin Kerja
+                                </option>
+                                <option
+                                    value="Izin Praktek" {{ ($filters['kategori'] ?? '') == 'Izin Praktek' ? 'selected' : '' }}>
+                                    Izin Praktek
+                                </option>
                             </select>
                         </div>
                     </div>
                     <div class="flex justify-end mt-4">
-                        <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">
+                        <button type="submit"
+                                class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors">
                             Terapkan Filter
                         </button>
                     </div>
@@ -71,9 +81,15 @@
                     <table class="w-full hidden md:table">
                         <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Izin</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Nama Izin
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Kategori
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Aksi
+                            </th>
                         </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -83,19 +99,22 @@
                                     <div class="text-sm font-medium text-gray-900">{{ $izin->nama }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    @if($izin->kategori == 'Penelitian')
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                                Penelitian
+                                    @if($izin->kategori == 'Izin Kerja')
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                                Izin Kerja
                                             </span>
                                     @else
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                                Praktik Nakes
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                                Izin Praktek
                                             </span>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <div class="flex space-x-3">
-                                        <a href="{{ route('admin.jenis_izin.edit', $izin) }}" class="text-blue-600 hover:text-blue-900">Edit</a>
+                                        <a href="{{ route('admin.jenis_izin.edit', $izin) }}"
+                                           class="text-blue-600 hover:text-blue-900">Edit</a>
 
                                         <form action="{{ route('admin.jenis_izin.destroy', $izin) }}" method="POST"
                                               onsubmit="return confirm('Hapus jenis izin {{ $izin->nama }}?');">
@@ -125,18 +144,27 @@
     </main>
 
     <style>
-        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const katFilter = document.getElementById('kategori-filter');
             if (katFilter) {
-                katFilter.addEventListener('change', function() {
+                katFilter.addEventListener('change', function () {
                     document.getElementById('filter-form').submit();
                 });
             }

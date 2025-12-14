@@ -42,6 +42,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::patch('/validasi-dokumen/{arsip}/revisi', [\App\Http\Controllers\Operator\ValidasiDokumenController::class, 'revisi'])->name('operator.dokumen.lakukanRevisi');
 
         Route::get('/operator/dokumen-masuk/export', [\App\Http\Controllers\Operator\DokumenMasukController::class, 'export'])->name('operator.dokumen_masuk.export');
+        Route::post('/operator/dokumen-masuk/{arsip}/upload-sip', [\App\Http\Controllers\Operator\DokumenMasukController::class, 'uploadSip'])
+            ->name('operator.dokumen.upload_sip');
     });
 
     //? User

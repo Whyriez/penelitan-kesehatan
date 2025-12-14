@@ -40,7 +40,7 @@ class JenisIzinController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'kategori' => 'required|string|in:Penelitian,Praktik Nakes', // Sesuaikan opsi
+            'kategori' => 'required|string|in:Izin Kerja,Izin Praktek', // Sesuaikan opsi
         ]);
 
         JenisIzin::create($request->all());
@@ -58,7 +58,7 @@ class JenisIzinController extends Controller
     {
         $request->validate([
             'nama' => 'required|string|max:255',
-            'kategori' => 'required|string|in:Penelitian,Praktik Nakes',
+            'kategori' => 'required|string|in:Izin Kerja,Izin Praktek',
         ]);
 
         $jenisIzin->update($request->all());

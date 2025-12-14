@@ -24,7 +24,8 @@ class ArsipPenelitianKesehatan extends Model
         'status',
         'catatan_revisi',
         'file_revisi',
-        'tempat_praktek', // Baru
+        'tempat_praktek',
+        'file_surat_izin'
     ];
 
     protected $casts = [
@@ -32,6 +33,7 @@ class ArsipPenelitianKesehatan extends Model
         'tgl_surat' => 'date',
         'tgl_terbit' => 'date',
         'file_revisi' => 'array',
+        'file_surat_izin' => 'array',
     ];
 
 

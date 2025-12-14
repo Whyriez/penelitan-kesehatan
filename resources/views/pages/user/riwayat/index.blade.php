@@ -145,17 +145,29 @@
                                         </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    {{-- UPDATE 2: Tambahkan 'draft' ke in_array pengecekan --}}
-                                    @if (in_array($doc->status, ['pending', 'revisi', 'ditolak', 'draft']))
-                                        <a href="{{ route('user.dokumen.edit', $doc) }}"
-                                           class="text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 px-3 py-1 rounded transition-colors border border-indigo-200">
-                                            {{ $doc->status === 'draft' ? 'Lanjutkan / Edit' : 'Update / Revisi' }}
+                                    {{-- LOGIKA BARU: Jika Valid DAN File SIP sudah ada --}}
+                                    @if ($doc->status == 'valid' && $doc->file_surat_izin)
+                                        <a href="{{ asset('storage/' . $doc->file_surat_izin) }}" target="_blank"
+                                           class="inline-flex items-center px-3 py-1.5 bg-green-600 text-white text-xs font-medium rounded-lg hover:bg-green-700 transition-colors shadow-sm">
+                                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                            </svg>
+                                            Unduh SIP
                                         </a>
+
+                                        {{-- Jika Draft/Revisi/Pending --}}
+                                    @elseif (in_array($doc->status, ['pending', 'revisi', 'ditolak', 'draft']))
+                                        <a href="{{ route('user.dokumen.edit', $doc) }}"
+                                           class="inline-flex items-center px-3 py-1.5 text-indigo-600 hover:text-indigo-900 bg-indigo-50 hover:bg-indigo-100 rounded border border-indigo-200 transition-colors">
+                                            {{ $doc->status === 'draft' ? 'Lanjutkan' : 'Revisi' }}
+                                        </a>
+
+                                        {{-- Jika Valid tapi operator belum upload file (Terkunci) --}}
                                     @else
-                                        <span class="text-gray-400 cursor-not-allowed px-3 py-1 flex items-center bg-gray-50 rounded border border-gray-200">
-                                                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                                                Terkunci
-                                            </span>
+                                        <span class="text-gray-400 cursor-not-allowed px-3 py-1 flex items-center bg-gray-50 rounded border border-gray-200" title="Dokumen disetujui, menunggu penerbitan SIP">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+            {{ $doc->status == 'valid' ? 'Proses Terbit' : 'Terkunci' }}
+        </span>
                                     @endif
                                 </td>
                             </tr>
@@ -227,6 +239,14 @@
                                     <div class="text-xs text-red-600 bg-red-50 p-2 rounded border border-red-100">
                                         <strong>Revisi:</strong> {{ $doc->catatan_revisi }}
                                     </div>
+                                @endif
+
+                                @if ($doc->status == 'valid' && $doc->file_surat_izin)
+                                    <a href="{{ asset('storage/' . $doc->file_surat_izin) }}" target="_blank"
+                                       class="block w-full text-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition shadow-sm flex items-center justify-center">
+                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                                        Download Surat Izin (SIP)
+                                    </a>
                                 @endif
 
                                 {{-- UPDATE 4: Tambahkan draft di mobile --}}
