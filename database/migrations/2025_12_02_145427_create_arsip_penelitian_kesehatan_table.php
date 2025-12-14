@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('arsip_penelitian_kesehatan', function (Blueprint $table) {
+        Schema::create('arsip_izin_kesehatan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
 

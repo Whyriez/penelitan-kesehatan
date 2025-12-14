@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('arsip_penelitian_kesehatan', function (Blueprint $table) {
+        Schema::table('arsip_izin_kesehatan', function (Blueprint $table) {
             $table->json('file_surat_izin')->nullable()->after('file_revisi');
         });
     }
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('arsip_penelitian_kesehatan', function (Blueprint $table) {
+        Schema::table('arsip_izin_kesehatan', function (Blueprint $table) {
             $table->dropColumn('file_surat_izin');
         });
     }

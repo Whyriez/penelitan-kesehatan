@@ -10,7 +10,7 @@ class ArsipPenelitianKesehatan extends Model
 {
     use HasFactory;
 
-    protected $table = 'arsip_penelitian_kesehatan';
+    protected $table = 'arsip_izin_kesehatan';
     protected $fillable = [
         'user_id',
         'jenis_izin_id', // Foreign Key
