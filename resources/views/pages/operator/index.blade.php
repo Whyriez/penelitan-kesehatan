@@ -175,7 +175,7 @@
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 fade-in">
                     <h3 class="text-lg font-semibold text-gray-900 mb-4">Aksi Cepat</h3>
                     <div class="space-y-3">
-                        <a href="{{ route('admin.dokumen_masuk') }}"
+                        <a href="{{ route('operator.dokumen_masuk') }}"
                             class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-200 transition-colors group">
                             <div
                                 class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-blue-200">
@@ -189,18 +189,16 @@
                             <span class="text-sm font-medium text-gray-700">Kelola Dokumen Masuk</span>
                         </a>
 
-                        <a href="{{ route('admin.users.index') }}"
+                        <a href="{{ route('operator.validasi_dokumen') }}"
                             class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-green-50 hover:border-green-200 transition-colors group">
                             <div
                                 class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-green-200">
-                                <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor"
-                                    viewbox="0 0 24 24">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z">
-                                    </path>
+                                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
-                            <span class="text-sm font-medium text-gray-700">Kelola Pengguna</span>
+                            <span class="text-sm font-medium text-gray-700">Validasi Dokumen</span>
                         </a>
                     </div>
                 </div>
