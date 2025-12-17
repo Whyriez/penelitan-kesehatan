@@ -122,7 +122,7 @@
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 fade-in">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-lg font-semibold text-gray-900">Aktivitas Terbaru</h3>
-                        <a href="{{ route('admin.dokumen_masuk') }}"
+                        <a href="{{ route('operator.dokumen_masuk') }}"
                             class="text-sm text-blue-600 hover:text-blue-800 font-medium">
                             Lihat Semua
                         </a>
