@@ -197,7 +197,6 @@
                             </div>
                             <div class="p-3 bg-white border-t border-gray-200 flex justify-between items-center">
                                 <span id="filename-display-{{ $doc->id }}" class="text-xs text-gray-500 italic">Belum ada file dipilih</span>
-                                <a id="download-btn-{{ $doc->id }}" href="#" target="_blank" class="text-blue-600 hover:text-blue-800 text-sm font-medium hidden">Download &rarr;</a>
                             </div>
                         </div>
                     </div>
