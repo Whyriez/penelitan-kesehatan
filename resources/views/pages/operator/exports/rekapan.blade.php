@@ -89,7 +89,7 @@
                 <td style="border: 1px solid #000000;">
                     {{ $row->tgl_terbit ? \Carbon\Carbon::parse($row->tgl_terbit)->format('d M Y') : '-' }}
                 </td>
-                <td style="border: 1px solid #000000;">'{{ $row->user->nomor_telepon ?? '-' }}</td>
+                <td style="border: 1px solid #000000;">{{ $row->user->nomor_telepon ?? '-' }}</td>
 
                 {{-- KOLOM STATUS DIHAPUS DARI SINI --}}
             </tr>

@@ -42,6 +42,8 @@ class AuthController extends Controller
                     return redirect()->route('operator.index');
                 case 'user':
                     return redirect()->route('user.index');
+                case 'pengawas':
+                    return redirect()->route('pengawas.index');
                 default:
                     Auth::logout();
                     return redirect('/')->with('flash.error', 'Peran tidak valid.');

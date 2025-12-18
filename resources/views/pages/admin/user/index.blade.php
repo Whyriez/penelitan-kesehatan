@@ -42,10 +42,14 @@
                         <div>
                             <label for="role-filter" class="block text-sm font-medium text-gray-700 mb-2">Filter Role</label>
                             <select id="role-filter" name="role"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base">
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base">
                                 <option value="">Semua Role</option>
                                 <option value="admin" {{ ($filters['role'] ?? '') == 'admin' ? 'selected' : '' }}>Admin</option>
                                 <option value="operator" {{ ($filters['role'] ?? '') == 'operator' ? 'selected' : '' }}>Operator</option>
+
+                                {{-- OPSI BARU --}}
+                                <option value="pengawas" {{ ($filters['role'] ?? '') == 'pengawas' ? 'selected' : '' }}>Pengawas</option>
+
                                 <option value="user" {{ ($filters['role'] ?? '') == 'user' ? 'selected' : '' }}>User</option>
                             </select>
                         </div>
@@ -101,6 +105,7 @@
                                             $roleMap = [
                                                 'admin' => ['text' => 'Admin', 'class' => 'bg-purple-100 text-purple-800'],
                                                 'operator' => ['text' => 'Operator', 'class' => 'bg-blue-100 text-blue-800'],
+                                                'pengawas' => ['text' => 'Pengawas', 'class' => 'bg-teal-100 text-teal-800'],
                                                 'user' => ['text' => 'User', 'class' => 'bg-gray-100 text-gray-800']
                                             ];
                                             $r = $roleMap[$user->role] ?? ['text' => $user->role, 'class' => 'bg-gray-100 text-gray-800'];
@@ -113,7 +118,7 @@
                                     <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
                                         <div class="flex space-x-3">
                                             <a href="{{ route('admin.users.edit', $user) }}" class="text-blue-600 hover:text-blue-900">Edit</a>
-                                            
+
                                             <form action="{{ route('admin.users.destroy', $user) }}" method="POST"
                                                   onsubmit="return confirm('Apakah Anda yakin ingin menghapus user {{ $user->name }}? Tindakan ini tidak dapat dibatalkan.');">
                                                 @csrf
@@ -154,7 +159,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const roleFilter = document.getElementById('role-filter');

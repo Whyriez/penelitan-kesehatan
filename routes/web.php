@@ -15,6 +15,15 @@ Route::post('/login', [AuthController::class, 'login_process'])->name('login.pro
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::group(['middleware' => ['auth']], function () {
+    //? Pengawas (BARU)
+    Route::middleware(['cekrole:pengawas'])->group(function () {
+        // Halaman Utama Pengawas (Rekapan)
+        Route::get('/pengawas/rekapan', [\App\Http\Controllers\Pengawas\PengawasController::class, 'index'])->name('pengawas.index');
+
+        // Export Excel
+        Route::get('/pengawas/rekapan/export', [\App\Http\Controllers\Pengawas\PengawasController::class, 'export'])->name('pengawas.export');
+    });
+
     //? Admin
     Route::middleware(['cekrole:admin'])->group(function () {
         Route::get('/admin/dokumen-masuk', [DokumenMasukController::class, 'index'])->name('admin.dokumen_masuk');

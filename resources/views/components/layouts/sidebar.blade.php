@@ -1,6 +1,5 @@
 <div id="sidebar"
      class="sidebar-transition bg-white border-r border-gray-200 w-64 h-full flex flex-col fixed md:relative z-20 md:translate-x-0 sidebar-hidden md:sidebar-visible shadow-sm">
-    <!-- Logo -->
     <div class="p-6 border-b border-gray-100">
         <div class="flex items-center space-x-3">
             <img src="{{ asset('img/logo.jpg') }}"
@@ -23,26 +22,34 @@
                     $dashboardRoute = 'admin.index';
                 } elseif (Auth::user()->role === 'operator') {
                     $dashboardRoute = 'operator.index';
+                } elseif (Auth::user()->role === 'pengawas') {
+                    $dashboardRoute = 'pengawas.index';
                 }
 
-                $dashboardRoutes = ['admin.index', 'operator.index', 'user.index'];
+                $dashboardRoutes = ['admin.index', 'operator.index', 'user.index', 'pengawas.index'];
             @endphp
-            <li>
-                <a href="{{ route($dashboardRoute) }}" @class([
-                    'flex items-center space-x-3 px-3 py-2 rounded-md transition-colors',
-                    'bg-green-50 text-green-700 border border-green-100' => request()->routeIs(
-                        $dashboardRoutes),
 
-                    'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->routeIs(
-                        $dashboardRoutes),
-                ])>
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
-                    </svg>
-                    <span class="text-sm">Dashboard</span>
-                </a>
-            </li>
+            {{-- MODIFIKASI: Sembunyikan Dashboard jika role adalah Pengawas --}}
+            @if (Auth::user()->role !== 'pengawas')
+                <li>
+                    <a href="{{ route($dashboardRoute) }}" @class([
+                        'flex items-center space-x-3 px-3 py-2 rounded-md transition-colors',
+                        'bg-green-50 text-green-700 border border-green-100' => request()->routeIs(
+                            $dashboardRoutes),
+
+                        'text-gray-600 hover:bg-gray-50 hover:text-gray-900' => !request()->routeIs(
+                            $dashboardRoutes),
+                    ])>
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                        </svg>
+                        <span class="text-sm">Dashboard</span>
+                    </a>
+                </li>
+            @endif
+            {{-- AKHIR MODIFIKASI --}}
+
             @if (Auth::user()->role === 'admin')
                 <li>
                     <a href="{{ route('admin.dokumen_masuk') }}" @class([
@@ -126,6 +133,24 @@
                         <span class="text-sm">Validasi Dokumen</span>
                     </a>
                 </li>
+            @elseif(Auth::user()->role === 'pengawas')
+                {{-- MENU KHUSUS PENGAWAS --}}
+                <li>
+                    <a href="{{ route('pengawas.index') }}" @class([
+                        'flex items-center space-x-3 px-3 py-2 rounded-md',
+                        'bg-green-50 text-green-700 border border-green-100' => request()->routeIs('pengawas.index'),
+                        'text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors' => !request()->routeIs('pengawas.index'),
+                    ])>
+                        {{-- Icon Rekapan / Clipboard --}}
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01">
+                            </path>
+                        </svg>
+                        <span class="text-sm">Rekapan SIP Valid</span>
+                    </a>
+                </li>
+
             @else
                 <li>
                     <a href="{{ route('user.upload') }}" @class([

@@ -48,7 +48,7 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)],
-            'role' => ['required', Rule::in(['admin', 'operator', 'user'])],
+            'role' => ['required', Rule::in(['admin', 'operator', 'user', 'pengawas'])],
             'password' => 'required|string|min:8',
             'nomor_telepon' => ['required', 'string', 'max:20'],
             'institusi' => ['required', 'string', 'max:255'],
@@ -85,7 +85,8 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)->ignore($user->id)],
-            'role' => ['required', Rule::in(['admin', 'operator', 'user'])],
+            // UPDATE: Tambahkan 'pengawas' ke dalam array validasi
+            'role' => ['required', Rule::in(['admin', 'operator', 'user', 'pengawas'])],
             'password' => 'nullable|string|min:8',
             'nomor_telepon' => ['required', 'string', 'max:20'],
             'institusi' => ['required', 'string', 'max:255'],
@@ -101,7 +102,7 @@ class UserController extends Controller
         } else {
             $data['password'] = Hash::make($data['password']);
         }
-        
+
         $user->update($data);
 
         return redirect()->route('admin.users.index')

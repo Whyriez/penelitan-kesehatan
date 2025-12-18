@@ -52,9 +52,26 @@ class AkunSeeder extends Seeder
                 'updated_at' => $now,
             ],
 
+            // Akun Pengawas
+            [
+                'name' => 'Pengawas Dinas',
+                'email' => 'pengawas@gmail.com',
+                'password' => Hash::make('123'),
+                'role' => 'pengawas',
+                'nomor_telepon' => '081200000003',
+                'institusi' => 'Dinas Kesehatan Prov. Gorontalo',
+                'nomor_identitas' => 'WAS001',
+                'gelar_jabatan' => 'Kepala Bidang',
+                'department' => 'Manajemen',
+                'alamat' => 'Jl. Jendral Sudirman No. 1',
+                'email_verified_at' => $now,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ],
+
             // 3. Akun User (Mahasiswa Peneliti)
             [
-                'name' => 'Mhs (Mahasiswa)',
+                'name' => 'Pengguna1',
                 'email' => 'user@gmail.com',
                 'password' => Hash::make('123'),
                 'role' => 'user',

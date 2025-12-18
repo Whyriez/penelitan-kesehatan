@@ -74,15 +74,16 @@
                             class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
                     </div>
                     <!-- === AKHIR FIELD BARU === -->
-                    
+
                     <div>
                         <label for="role" class="block text-sm font-medium text-gray-700 mb-1">Role</label>
                         <select id="role" name="role" required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
                             <option value="">Pilih Role</option>
                             <option value="user" {{ old('role', $user->role) == 'user' ? 'selected' : '' }}>User</option>
                             <option value="operator" {{ old('role', $user->role) == 'operator' ? 'selected' : '' }}>Operator</option>
                             <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="pengawas" {{ old('role', $user->role) == 'pengawas' ? 'selected' : '' }}>Pengawas</option>
                         </select>
                     </div>
 
