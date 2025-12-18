@@ -95,7 +95,6 @@
                         <tr>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">Judul & Izin</th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">Pemohon</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">Dokumen SIP</th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase">Aksi</th>
                         </tr>
                         </thead>
@@ -112,16 +111,6 @@
                                 <td class="px-6 py-4">
                                     <div class="text-sm font-medium text-gray-900">{{ $doc->user->name ?? 'User Terhapus' }}</div>
                                     <div class="text-xs text-gray-500">{{ $doc->user->email ?? '-' }}</div>
-                                </td>
-                                <td class="px-6 py-4">
-                                    @if($doc->file_surat_izin)
-                                        <a href="{{ asset('storage/' . $doc->file_surat_izin) }}" target="_blank" class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 hover:bg-green-200">
-                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                            Download SIP
-                                        </a>
-                                    @else
-                                        <span class="text-xs text-gray-400 italic">Belum diupload</span>
-                                    @endif
                                 </td>
                                 <td class="px-6 py-4">
                                     <button data-modal-toggle="detail-modal-{{ $doc->id }}"
