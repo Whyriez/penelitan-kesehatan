@@ -7,7 +7,7 @@
                  class="mx-auto w-10 h-15" />
             <div>
                 <h2 id="system-name" class="text-lg font-medium text-gray-900">
-                    Penelitian Kesehatan
+                    Izin Kesehatan
                 </h2>
                 <p class="text-xs text-gray-500">{{ ucfirst(Auth::user()->role) }} Panel</p>
             </div>

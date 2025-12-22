@@ -70,8 +70,7 @@
 
                         {{-- Tempat Praktik --}}
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">Tempat Praktik / Lokasi
-                                Penelitian</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Tempat Praktik</label>
                             <input type="text" name="tempat_praktek" value="{{ old('tempat_praktek') }}"
                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                                    placeholder="Contoh: RSUD Prof. Aloe Saboe">
