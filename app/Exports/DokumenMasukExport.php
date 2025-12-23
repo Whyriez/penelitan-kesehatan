@@ -13,20 +13,20 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class DokumenMasukExport implements FromView, ShouldAutoSize, WithStyles
 {
     protected $filters;
+    protected $viewName;
 
-    public function __construct($filters)
+    public function __construct($filters, $viewName = 'pages.operator.exports.rekapan')
     {
         $this->filters = $filters;
+        $this->viewName = $viewName;
     }
 
     public function view(): View
     {
         $query = ArsipPenelitianKesehatan::query()
             ->with(['user', 'jenisIzin'])
-            // MODIFIKASI: Hanya ambil data yang statusnya 'valid' (disetujui)
             ->where('status', 'valid');
 
-        // 1. Filter Search
         if (!empty($this->filters['search'])) {
             $search = $this->filters['search'];
             $query->where(function ($q) use ($search) {
@@ -38,15 +38,6 @@ class DokumenMasukExport implements FromView, ShouldAutoSize, WithStyles
             });
         }
 
-        // 2. Filter Status (DIHAPUS/KOMENTAR)
-        // Karena kita memaksa hanya export yang 'valid', filter dinamis ini tidak diperlukan lagi.
-        /*
-        if (!empty($this->filters['status'])) {
-            $query->where('status', $this->filters['status']);
-        }
-        */
-
-        // 3. Filter Tanggal
         if (!empty($this->filters['date_from'])) {
             $query->whereDate('created_at', '>=', $this->filters['date_from']);
         }
@@ -88,10 +79,10 @@ class DokumenMasukExport implements FromView, ShouldAutoSize, WithStyles
             $tahun = now()->year;
         }
 
-        return view('pages.operator.exports.rekapan', [
+        return view($this->viewName, [
             'groupedData' => $groupedData,
             'bulan' => $labelBulan,
-            'tahun' => $tahun
+            'tahun' => $tahun,
         ]);
     }
 

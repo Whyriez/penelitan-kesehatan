@@ -101,7 +101,7 @@
                             @foreach($syarat as $key => $label)
                                 @php
                                     // Cek apakah ini file optional (pernyataan_skp ATAU bukti_skp)
-                                    $isOptional = in_array($key, ['pernyataan_skp', 'bukti_skp']);
+                                    $isOptional = in_array($key, ['pernyataan_skp', 'bukti_skp', 'sip_lama']);
                                 @endphp
                                 <div
                                     class="bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-blue-300 transition-colors {{ $errors->has('dokumen.'.$key) ? 'border-red-300 bg-red-50' : '' }}">

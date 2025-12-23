@@ -18,7 +18,8 @@ class DokumenController extends Controller
         'ktp' => 'Foto Copy KTP',
         'pernyataan_praktek' => 'Surat Pernyataan Tempat Praktek',
         'bukti_skp' => 'Bukti Kecukupan SKP (Satuan Kredit Profesi)',
-        'pernyataan_skp' => 'Surat Pernyataan Kecukupan SKP (Satuan Kredit Profesi)'
+        'pernyataan_skp' => 'Surat Pernyataan Kecukupan SKP (Satuan Kredit Profesi)',
+        'sip_lama' => 'Surat Izin Praktik (SIP) Lama'
     ];
 
     public function indexUpload()
@@ -171,7 +172,7 @@ class DokumenController extends Controller
                 foreach ($this->syaratDokumen as $key => $label) {
 
                     // SKIP Pernyataan SKP agar tidak dianggap 'Kurang'
-                    if ($key === 'pernyataan_skp') continue;
+                    if ($key === 'pernyataan_skp' || $key === 'sip_lama') continue;
 
                     if (!isset($currentFiles[$key])) $missingFiles[] = $label;
                 }

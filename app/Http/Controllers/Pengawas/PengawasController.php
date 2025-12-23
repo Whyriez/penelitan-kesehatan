@@ -63,11 +63,12 @@ class PengawasController extends Controller
 
     public function export(Request $request)
     {
-        // Gunakan Class Export yang sama dengan Operator
-        // Class DokumenMasukExport anda sudah diset where('status', 'valid'), jadi aman.
-        $filters = $request->all();
         $timestamp = date('d-m-Y_H-i');
 
-        return Excel::download(new DokumenMasukExport($filters), "Rekapan_SIP_Valid_$timestamp.xlsx");
+        // Panggil Export dengan View Khusus Pengawas (parameter kedua)
+        return Excel::download(
+            new DokumenMasukExport($request->all(), 'pages.pengawas.exports.rekapan_pengawas'),
+            "Rekapan_Penelitian_Kesehatan_Valid_$timestamp.xlsx"
+        );
     }
 }
