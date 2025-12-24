@@ -71,7 +71,7 @@ class DokumenController extends Controller
                 foreach ($this->syaratDokumen as $key => $label) {
 
                     // PERUBAHAN DISINI: Skip pernyataan_skp DAN bukti_skp
-                    if (in_array($key, ['pernyataan_skp', 'bukti_skp'])) continue;
+                    if (in_array($key, ['pernyataan_skp', 'bukti_skp', 'sip_lama'])) continue;
 
                     if (!isset($filePaths[$key])) {
                         return back()->withInput()->withErrors(['dokumen.' . $key => "Dokumen $label wajib diunggah."]);
